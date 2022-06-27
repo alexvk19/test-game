@@ -1,18 +1,19 @@
 
 const MINE = -1; 
-const BOARD_BACKGROUND = 'green'
-const BORDER_COLOR = 'violet';
+const BOARD_BACKGROUND = '#bbb'
+const BORDER_COLOR = '#aaa';
 const CELL_BORDER_WIDTH = 1;
 const BOARD_BORDER_WIDTH = 1;
-const FONT_STYLE = '15px sans-serif';
+const FONT_STYLE = '15px Arial';
 const QUESTION_MARK = '?';
-const CLOSED_CELL_COLOR = '#ccc';
+const CLOSED_CELL_COLOR = '#ddd';
 const OPEN_CELL_COLOR = '#eee';
 const DEFAULT_CELL_SIZE = 30;
 const DEFAULT_BOARD_WIDTH = 10;
 const DEFAULT_BOARD_HEIGHT = 10; 
 const DEFAULT_MAX_MINES = 10;
 
+var board; 
 
 class Cell {
 
@@ -86,20 +87,22 @@ class BoardData {
     setMines() {
         for (var i = 0; i < this.maxMines; i++) {
             while (true) {
-                var x = Math.random() * this.width;
-                var y = Math.random() * this.height;
-                if (! this.callHasMine(x, y) ) {
-                    this.cells[x][y].value = MINE;
+                var col = Math.floor(Math.random() * this.width);
+                var row = Math.floor(Math.random() * this.height);
+                if (! this.cells[col][row].hasMine() ) {
+                    this.cells[col][row].value = MINE;
                     break;
                 }    
             }               
         }
     }
+
 }
 
 class Board {
 
     constructor(boardData, canvasElement) {
+        this.initialized = false;
         this.data = new BoardData(boardData);
 
         if (boardData && boardData.cellSize)
@@ -107,38 +110,17 @@ class Board {
 
         this.canvas = canvasElement;
         this.context = this.canvas.getContext("2d");
-        this.canvas.addEventListener("click", this.onClickHandler);      
+        this.canvas.width = this.boardWidth;
+        this.canvas.height = this.boardHeight;
+        this.canvas.addEventListener("click", onClickHandler);             
     }
 
-    drawBoard() {
-        this.context.fillStyle = BOARD_BACKGROUND;
-        this.context.fillRect(0, 0, this.data.width * this.cellSize + (this.data.width - 1) * CELL_BORDER_WIDTH + BOARD_BORDER_WIDTH * 2, this.data.height * this.cellSize + (this.data.height - 1) * CELL_BORDER_WIDTH + BOARD_BORDER_WIDTH * 2);
-
-        for (var i = 0; i < this.data.width; i++)
-            for(var j = 0; j < this.data.height; j++)
-                this.drawCell(i, j);
+    get boardWidth() {
+        return this.data.width * this.cellSize + (this.data.width - 1) * CELL_BORDER_WIDTH + BOARD_BORDER_WIDTH * 2;
     }
 
-    drawCell(x, y) {
-        if (x < 0 || x >= this.data.width || y < 0 || y >= this.data.height)
-            return;
-
-        if (this.data.cells[x][y].opened)
-            this.drawOpenedCell(x, y);
-        else
-            this.drawClosedCell(x, y);        
-    }
-
-    drawClosedCell(x, y) {
-        this.drawCellBorder(x, y);
-        //this.drawCellGrains(x, y);
-        //this.drawCellArea(x, y, CLOSED_CELL_COLOR, GRAIN_SIZE);
-    }
-
-    drawOpenedCell(x, y) {
-        this.drawCellBorder(x, y);
-        this.drawCellArea(x, y, OPEN_CELL_COLOR, 0);
-        this.drawCellValue(x, y);
+    get boardHeight() {
+        return this.data.height * this.cellSize + (this.data.height - 1) * CELL_BORDER_WIDTH + BOARD_BORDER_WIDTH * 2;
     }
 
     getCellRect(x, y) {
@@ -150,59 +132,123 @@ class Board {
         return result;
     }
 
-    drawCellBorder(x, y) {
+    getCellByCoord(x, y) {
+        var result = {col: -1, row: -1};
+        result.col = Math.floor( (x - BOARD_BORDER_WIDTH) / this.cellSize);
+        result.row = Math.floor( (y - BOARD_BORDER_WIDTH) / this.cellSize);
+        return result;
+    }
+
+    drawBoard() {
+        this.context.fillStyle = BOARD_BACKGROUND;
+        this.context.fillRect(0, 0, this.boardWidth, this.boardHeight);
+
+        for (var i = 0; i < this.data.width; i++)
+            for(var j = 0; j < this.data.height; j++)
+                this.drawCell(i, j);
+    }
+
+    drawCell(col, row) {
+        if (col < 0 || col >= this.data.width || row < 0 || row >= this.data.height)
+            return;
+
+        if (this.data.cells[col][row].opened)
+            this.drawOpenedCell(col, row);
+        else
+            this.drawClosedCell(col, row);        
+    }
+
+    drawClosedCell(col, row) {
+        var rect = this.getCellRect(col, row);
+        this.drawCellBorder(rect);
+        this.drawCellArea(rect, CLOSED_CELL_COLOR, true);
+        this.drawCellGrains(rect);
+    }
+
+    drawOpenedCell(col, row) {
+        var rect = this.getCellRect(col, row);
+        this.drawCellBorder(rect);
+        this.drawCellArea(rect, OPEN_CELL_COLOR, false);
+        this.drawCellValue(col, row, rect);
+    }
+
+    drawCellBorder(cellRect) {
         this.context.beginPath();
         this.context.strokeStyle = BORDER_COLOR;
-        var rect = this.getCellRect(x, y);
-        this.context.moveTo(rect.x1, rect.y2);
-        this.context.lineTo(rect.x2, rect.y2);
-        this.context.lineTo(rect.x2, rect.y1);
+        this.context.moveTo(cellRect.x1, cellRect.y2);
+        this.context.lineTo(cellRect.x2, cellRect.y2);
+        this.context.lineTo(cellRect.x2, cellRect.y1);
         this.context.stroke();
     }
 
-    drawCellGrains(x, y) {
+    drawCellGrains(cellRect) {
         this.context.beginPath();
-        this.context.strokeStyle = 'red';
-        this.context.moveTo( x * this.cellSize, (y + 1) * this.cellSize - BORDER_WIDTH - 1);
-        this.context.lineTo( (x + 1) * this.cellSize - BORDER_WIDTH - 1, (y + 1) * this.cellSize - BORDER_WIDTH - 1);
-        this.context.lineTo( (x + 1) * this.cellSize - BORDER_WIDTH - 1, y * this.cellSize - BORDER_WIDTH - 1);
+        this.context.strokeStyle = '#999';
+        this.context.moveTo( cellRect.x1, cellRect.y2 - CELL_BORDER_WIDTH);
+        this.context.lineTo( cellRect.x2 - CELL_BORDER_WIDTH, cellRect.y2 - CELL_BORDER_WIDTH);
+        this.context.lineTo( cellRect.x2 - CELL_BORDER_WIDTH, cellRect.y1);
         this.context.stroke();        
 
         this.context.beginPath();
         this.context.strokeStyle = '#fff';
-        this.context.moveTo(x * this.cellSize, (y + 1) * this.cellSize - BORDER_WIDTH - 1);
-        this.context.lineTo(x * this.cellSize, y * this.cellSize);
-        this.context.lineTo( (x + 1) * this.cellSize - BORDER_WIDTH - 1, y * this.cellSize);
+        this.context.moveTo( cellRect.x1, cellRect.y2 - CELL_BORDER_WIDTH);
+        this.context.lineTo( cellRect.x1, cellRect.y1);
+        this.context.lineTo( cellRect.x2 - CELL_BORDER_WIDTH, cellRect.y1);
         this.context.stroke();
     }
 
-    drawCellArea(x, y, fillStyle, grainSize) {
+    drawCellArea(cellRect, fillStyle, cellHasGrains) {
         this.context.fillStyle = fillStyle;
-        this.context.fillRect( x * this.cellSize + grainSize, y * this.cellSize + grainSize, this.cellSize - grainSize,this.cellSize - grainSize);
+        if (cellHasGrains) {
+            this.context.fillRect(  cellRect.x1 + 1, 
+                                    cellRect.y1 + 1, 
+                                    cellRect.x2 - cellRect.x1 - 2 - CELL_BORDER_WIDTH,
+                                    cellRect.y2 - cellRect.y1 - 2 - CELL_BORDER_WIDTH);
+        } else {
+            this.context.fillRect(  cellRect.x1, 
+                                    cellRect.y1, 
+                                    cellRect.x2 - cellRect.x1 - CELL_BORDER_WIDTH, 
+                                    cellRect.y2 - cellRect.y1 - CELL_BORDER_WIDTH);
+        }
     }
 
-    drawCellValue(x, y) {
-        x_coord = (x + 0.5) * this.cellSize;
-        y_coord = (y + 0.5) * this.cellSize;
-        if (this.data.cell[x][j].marked)
-            this.context.fillText(QUESTION_MARK, x_coord, y_coord);
+    drawCellValue(col, row, cellRect) {
+        this.context.font = FONT_STYLE;
+        this.context.textAlign = 'center';
+        this.context.fillStyle = 'black';
+        var x = cellRect.x1 + (cellRect.x2 - cellRect.x1) / 2;
+        var y = cellRect.y1 + (cellRect.y2 - cellRect.y1) / 2;
+        if (this.data.cells[col][row].marked)
+            this.context.fillText(QUESTION_MARK, x, y);
         else
-            this.context.fillText(this.data.cell[x][j].value, x_coord, y_coord);
+            this.context.fillText(this.data.cells[col][row].value, x, y);
     }
 
-    onClickHandler(e) {
-        console.log('OnClick event...');
-        console.log(e);
-    }
+    handleClick(e) {
+        var r = this.getCellByCoord(e.offsetX, e.offsetY);
+        if (r.col >= 0 && r.row >= 0 && r.col < this.data.width && r.row < this.data.height) {
+            if (! this.initialized)
+                this.data.initialize();
+            var cell = this.data.cells[r.col][r.row];
+            if (! cell.opened) {
+                cell.opened = true;
+                this.drawCell(r.col, r.row);
+            }
+        }
+    } 
 
+}
+
+function onClickHandler(e) {
+    board.handleClick(e);
 }
 
 window.onload = function () {
     
     // Create board
     var canvasElement = document.getElementById("board");
-    if (canvasElement) {
-        var board = new Board( {width: DEFAULT_BOARD_WIDTH, 
+    if (canvasElement) { 
+        board = new Board( {width: DEFAULT_BOARD_WIDTH, 
                                 height: DEFAULT_BOARD_HEIGHT, 
                                 mines: DEFAULT_MAX_MINES, 
                                 cellSize: DEFAULT_CELL_SIZE }, canvasElement);
