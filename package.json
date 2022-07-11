@@ -1,0 +1,14 @@
+{
+  "name": "minesweeper",
+  "version": "1.0.0",
+  "description": "Test game for VKontakte.",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alexey Kuzin",
+  "license": "ISC",
+  "dependencies": {
+    "@vkontakte/vk-bridge": "^2.6.4"
+  }
+}
