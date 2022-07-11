@@ -621,9 +621,9 @@ window.onload = function () {
             notification: document.getElementById("notification"),
             button: document.getElementById("button")
         },
-        gameDescription: "<p>Чтобы открыть клетку &mdash; щёлкните её. " + 
-                         "Чтобы пометить клетку заминированной &mdash; щёлкните её правой кнопкой.</p>" +
-                         "<p>Игра закончится, когда все клетки с минами помечены, а остальные открыты.</p>"
+        gameDescription: "<p>Чтобы открыть клетку &mdash; щёлкните её.<br/>" + 
+                         "Чтобы пометить клетку заминированной &mdash; щёлкните её правой кнопкой.<br/>" +
+                         "Игра закончится, когда все клетки с минами помечены, а остальные открыты.</p>"
     }
 
     /* board = new Board( {width: DEFAULT_BOARD_WIDTH, 
