@@ -11,14 +11,14 @@ body {
 }
 
 p {
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1.45;
 }
 
 .headerArea {
     padding: 2rem 0 2rem 2rem;
     color : #fff;
-    background-color: blue; 
+    background-color: #0077FFe0; 
 }
 
 h1 {
@@ -30,7 +30,7 @@ h1 {
 }
 
 h1 .title2 {
-    font-size: 12px;    
+    font-size: 13px;    
     color: #ffffffcc;
 }
 
@@ -45,11 +45,21 @@ h1 .title2 {
     float: left;
 }
 
+.board {
+    margin: 0 0 0 0rem;
+    padding: 0 0 0 0rem;
+}
+
 .controls {
     float: left;
-    margin: 0 0 0 4rem;
-    padding: 0.5rem 0 0 0;
-    max-width: 290px;
+    margin: 2rem 0 0 4rem;
+    padding: 0 0 0 0;
+    max-width: 280px;
+}
+
+.controls > p:first-of-type {
+    margin-top: 0px;
+    
 }
 
 #description {
@@ -59,9 +69,8 @@ h1 .title2 {
 #description p {
     padding: 0px;
     margin: 0.7rem 0 0.7rem 0;
-    font-size: 12px;
+    font-size: 11px;
     color: #444;
-    line-height: 145%;
 }
 
 #notification {

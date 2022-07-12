@@ -560,7 +560,7 @@ class Game {
             if (! cell.marked) {
                 this.board.data.markCell(cell);
             } else {
-                this.board.data.removeMark(cell);
+                this.board.data.unmarkCell(cell);
             }        
             this.board.drawCell(col, row);
         }        
