@@ -12,20 +12,24 @@
     <body>
         <!-- Область заголовка -->
         <div class="headerArea">
-        <h1>Сапёр | <span class="title2">Minesweeper</span></h1>
-        <p class="subheader">Игра-пример для ВКонтакте</p>
+        <h1>Сапёр | <span class="title2">Игра-пример для ВКонтакте</span></h1>
         </div>
         
+
         <div>
+            <!-- Игровое поле -->
             <div class="board-container">
-                <canvas id="board" width="500" height="500"></canvas>
+                <canvas id="board"></canvas>
             </div>
+
+            <!-- Различная информация и элементы управления -->
             <div class="controls">
-                <p>Время: <span id="game-time"></span></p>
-                <p>Найдено мин: <span id="found-mines"></span></p>
-                <p><input id="cancel-button" type="button" value="Сбросить"/></p>
-                <p><input id="new-game-button" type="button" value="Новая игра"/></p>
-                <!-- Различная информация -->
+                <p>Время: <span id="time-elapsed"></span></p>
+                <p>Отмечено мин: <span id="marked-cells"></span></p>
+                <p><input id="button" type="button" value="Сбросить"/></p>
+                <div id="description"></div>
+                <div id="notification"></div>                
+                <!-- p><input id="new-game-button" type="button" value="Новая игра"/></p -->
             </div>
         </div>
     </body>
