@@ -49,6 +49,7 @@ h1 .title2 {
     float: left;
     margin: 0 0 0 4rem;
     padding: 0.5rem 0 0 0;
+    max-width: 290px;
 }
 
 #description {
@@ -57,7 +58,7 @@ h1 .title2 {
 
 #description p {
     padding: 0px;
-    margin: 0px;
+    margin: 0.7rem 0 0.7rem 0;
     font-size: 12px;
     color: #444;
     line-height: 145%;

@@ -576,7 +576,7 @@ class Game {
             (hours < 10 ? ("0" + hours) : hours) + ":" + 
             (minutes < 10 ? ("0" + minutes) : minutes) + ":" + 
             (seconds < 10 ? ("0" + seconds) : seconds); 
-         this.controls.markedCells.innerHTML = this.board.data.markedCells + "/" + this.board.data.maxMines; 
+         this.controls.markedCells.innerHTML = this.board.data.markedCells + " / " + this.board.data.maxMines; 
     }
 
 }
@@ -622,8 +622,8 @@ window.onload = function () {
             button: document.getElementById("button")
         },
         gameDescription: "<p>Чтобы открыть клетку &mdash; щёлкните её.<br/>" + 
-                         "Чтобы пометить клетку заминированной &mdash; щёлкните её правой кнопкой.<br/>" +
-                         "Игра закончится, когда все клетки с минами помечены, а остальные открыты.</p>"
+                         "Чтобы пометить клетку заминированной &mdash; щёлкните её правой кнопкой.</p>" +
+                         "<p>Игра закончится, когда все клетки с минами помечены, а остальные открыты.</p>"
     }
 
     /* board = new Board( {width: DEFAULT_BOARD_WIDTH, 
