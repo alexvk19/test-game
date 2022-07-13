@@ -39,10 +39,10 @@
     
     var initData = {
         board: {
-            width: 10,
-            height: 10,
-            cellSize: 30,
-            maxMines: 8,
+            width: 7,
+            height: 7,
+            cellSize: 40,
+            maxMines: 5,
             drawConstants : {}
         },    
         canvasElement: document.getElementById("board"),
@@ -53,8 +53,8 @@
             notification: document.getElementById("notification"),
             button: document.getElementById("button")
         },
-        gameDescription: "<p>Чтобы открыть клетку &mdash; щёлкните её.<br/>" + 
-                         "Чтобы пометить клетку заминированной &mdash; щёлкните её правой кнопкой.</p>" +
+        gameDescription: "<p>Чтобы открыть клетку &mdash; нажмите её.<br/>" + 
+                         "Чтобы пометить клетку заминированной &mdash; нажмите и удерживайте её.</p>" +
                          "<p>Игра закончится, когда все клетки с минами помечены, а остальные открыты.</p>"
     }
 
