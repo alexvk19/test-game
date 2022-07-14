@@ -1,29 +1,37 @@
 
-const MINE = -1; 
+const MINE = -1;
+
 const GAME_IN_PROGRESS = 0;
 const GAME_LOST = -1;
-const GAME_WON = 1;
+const GAME_WON  = 1;
 
-const FONT_STYLE = '15px Arial';
+const FONT_STYLE    = '15px Arial';
 const QUESTION_MARK = '?';
-const MINE_SYMBOL = '∗'; // &#8727;
+const MINE_SYMBOL   = '∗'; // &#8727;
 
 const BOARD_BORDER_WIDTH = 1;
-const CELL_BORDER_WIDTH = 1;
+const CELL_BORDER_WIDTH  = 1;
 
-const DEFAULT_CELL_SIZE = 30;
-const DEFAULT_BOARD_WIDTH = 8;
+const DEFAULT_CELL_SIZE    = 30;
+const DEFAULT_BOARD_WIDTH  = 8;
 const DEFAULT_BOARD_HEIGHT = 8; 
-const DEFAULT_MAX_MINES = 10;
+const DEFAULT_MAX_MINES    = 10;
 
-const BORDER_COLOR = '#999';
-const CELL_DARK_GRAIN = '#ccc';
-const CELL_LIGHT_GRAIN = '#fff';
-const CLOSED_CELL_COLOR = '#ddd';
-const OPEN_CELL_COLOR = '#eee';
-const QUESTION_MARK_COLOR = '#555';
-const CELL_VALUE_COLOR = '#222';
-const MINE_COLOR = 'maroon';
+const BORDER_COLOR           = '#999';
+const CELL_DARK_GRAIN_COLOR  = '#ccc';
+const CELL_LIGHT_GRAIN_COLOR = '#fff';
+const CLOSED_CELL_AREA_COLOR = '#ddd';
+const OPEN_CELL_AREA_COLOR   = '#eee';
+const QUESTION_MARK_COLOR    = '#555';
+const CELL_VALUE_COLOR       = '#222';
+const MINE_SYMBOL_COLOR      = 'maroon';
+
+const LABEL_NEW_GAME        = "Новая игра";
+const LABEL_CANCEL          = "Сбросить";
+const MSG_GAME_WON          = "Ура, победа!";
+const MSG_GAME_LOST         = "Ой, ошибка... Попробуйте еще раз";
+const MSG_GAME_CANCELLED    = "Игра остановлена по требованию";
+
 
 var game;
 
@@ -178,24 +186,16 @@ class BoardPainter {
         if (initData && initData.board && initData.board.cellSize)
             this.cellSize = initData.board.cellSize;
 
-        this.drawConstants = {};
-
-        /* var goOn = initData && initData.board && initData.board.drawConstants;
-
-        if (goOn && initData.board.drawConstants.cellBorderWidth)
-            this.drawConstants.cellBorderWidth = initData.board.drawConstants.cellBorderWidth;
-        else
-            this.drawConstants.cellBorderWidth = CELL_BORDER_WIDTH;
-        */
-
-        this.initializeCanvas(canvasElement, initData.eventHandlers);
+            this.initializeCanvas(canvasElement, initData.eventHandlers);
     }
 
     initializeCanvas(canvasElement, eventHandlers) {
+        // Save reference to canvas and set canvas size
         this.canvas = canvasElement;
         this.canvas.width = this.boardWidth;
         this.canvas.height = this.boardHeight;
 
+        // Initialize context
         this.context = this.canvas.getContext("2d");
         this.context.font = FONT_STYLE;
         this.context.textAlign = "center";
@@ -203,31 +203,31 @@ class BoardPainter {
     }
 
     get boardWidth() {
-        return this.boardData.width * this.cellSize + (this.boardData.width - 1) * CELL_BORDER_WIDTH + BOARD_BORDER_WIDTH * 2; // TO DO
+        return this.boardData.width * this.cellSize + (this.boardData.width - 1) * CELL_BORDER_WIDTH + BOARD_BORDER_WIDTH * 2;
     }
 
     get boardHeight() {
-        return this.boardData.height * this.cellSize + (this.boardData.height - 1) * CELL_BORDER_WIDTH + BOARD_BORDER_WIDTH * 2; // TO DO
+        return this.boardData.height * this.cellSize + (this.boardData.height - 1) * CELL_BORDER_WIDTH + BOARD_BORDER_WIDTH * 2;
     }
 
-    getCellRect(x, y) {
+    getCellRect(col, row) {
         var result = {x1: 0, y1: 0, x2: 0, y2: 0};
-        result.x1 = BOARD_BORDER_WIDTH + x * (this.cellSize + CELL_BORDER_WIDTH); // TO DO
+        result.x1 = BOARD_BORDER_WIDTH + col * (this.cellSize + CELL_BORDER_WIDTH);
         result.x2 = result.x1 + this.cellSize - 1;
-        result.y1 = BOARD_BORDER_WIDTH + y * (this.cellSize + CELL_BORDER_WIDTH); // TO DO 
+        result.y1 = BOARD_BORDER_WIDTH + row * (this.cellSize + CELL_BORDER_WIDTH); 
         result.y2 = result.y1 + this.cellSize - 1;
         return result;
     }
 
-    getCellByCoord(x, y) {
+    getCellDataByCoord(x, y) {
         var result = {col: -1, row: -1};
-        result.col = Math.floor( (x - BOARD_BORDER_WIDTH) / (this.cellSize + CELL_BORDER_WIDTH) ); // TO DO
-        result.row = Math.floor( (y - BOARD_BORDER_WIDTH) / (this.cellSize + CELL_BORDER_WIDTH) ); // TO DO
+        result.col = Math.floor( (x - BOARD_BORDER_WIDTH) / (this.cellSize + CELL_BORDER_WIDTH) );
+        result.row = Math.floor( (y - BOARD_BORDER_WIDTH) / (this.cellSize + CELL_BORDER_WIDTH) );
         return result;
     }
 
     draw(forceDrawCellValue) {
-        this.context.fillStyle = BORDER_COLOR; // TO DO
+        this.context.fillStyle = BORDER_COLOR;
         this.context.fillRect(0, 0, this.boardWidth, this.boardHeight);
 
         for (var i = 0; i < this.boardData.width; i++)
@@ -248,7 +248,7 @@ class BoardPainter {
     drawClosedCell(col, row, forceDrawCellValue) {
         var rect = this.getCellRect(col, row);
         this.drawCellBorder(rect);
-        this.drawCellArea(rect, CLOSED_CELL_COLOR, true);
+        this.drawCellArea(rect, CLOSED_CELL_AREA_COLOR, true);
         this.drawCellGrains(rect);
         if (typeof forceDrawCellValue == "boolean" && forceDrawCellValue)
             this.drawCellValue(col, row, rect);
@@ -260,13 +260,13 @@ class BoardPainter {
     drawOpenedCell(col, row) {
         var rect = this.getCellRect(col, row);
         this.drawCellBorder(rect);
-        this.drawCellArea(rect, OPEN_CELL_COLOR, false);
+        this.drawCellArea(rect, OPEN_CELL_AREA_COLOR, false);
         this.drawCellValue(col, row, rect);
     }
 
     drawCellBorder(cellRect) {
         this.context.beginPath();
-        this.context.strokeStyle = BORDER_COLOR; // TO DO
+        this.context.strokeStyle = BORDER_COLOR;
         this.context.moveTo(cellRect.x1, cellRect.y2);
         this.context.lineTo(cellRect.x2, cellRect.y2);
         this.context.lineTo(cellRect.x2, cellRect.y1);
@@ -275,17 +275,17 @@ class BoardPainter {
 
     drawCellGrains(cellRect) {
         this.context.beginPath();
-        this.context.strokeStyle = CELL_DARK_GRAIN; // TO DO
+        this.context.strokeStyle = CELL_DARK_GRAIN_COLOR;
         this.context.moveTo( cellRect.x1, cellRect.y2);
         this.context.lineTo( cellRect.x2, cellRect.y2);
         this.context.lineTo( cellRect.x2, cellRect.y1);
         this.context.stroke();    
 
         this.context.beginPath();
-        this.context.strokeStyle = CELL_LIGHT_GRAIN; // TO DO
-        this.context.moveTo( cellRect.x1 + 1, cellRect.y2 - CELL_BORDER_WIDTH); // TO DO
+        this.context.strokeStyle = CELL_LIGHT_GRAIN_COLOR;
+        this.context.moveTo( cellRect.x1 + 1, cellRect.y2 - CELL_BORDER_WIDTH);
         this.context.lineTo( cellRect.x1 + 1, cellRect.y1 + 1);
-        this.context.lineTo( cellRect.x2 - CELL_BORDER_WIDTH, cellRect.y1 + 1); // TO DO
+        this.context.lineTo( cellRect.x2 - CELL_BORDER_WIDTH, cellRect.y1 + 1);
         this.context.stroke();
     }
 
@@ -294,13 +294,13 @@ class BoardPainter {
         if (cellHasGrains) {
             this.context.fillRect(  cellRect.x1 + 1, 
                                     cellRect.y1 + 1, 
-                                    cellRect.x2 - cellRect.x1 - 1 - CELL_BORDER_WIDTH,  // TO DO
-                                    cellRect.y2 - cellRect.y1 - 1 - CELL_BORDER_WIDTH); // TO DO
+                                    cellRect.x2 - cellRect.x1 - 1 - CELL_BORDER_WIDTH,
+                                    cellRect.y2 - cellRect.y1 - 1 - CELL_BORDER_WIDTH);
         } else {
             this.context.fillRect(  cellRect.x1, 
                                     cellRect.y1, 
-                                    cellRect.x2 - cellRect.x1 - CELL_BORDER_WIDTH,      // TO DO
-                                    cellRect.y2 - cellRect.y1 - CELL_BORDER_WIDTH);     // TO DO
+                                    cellRect.x2 - cellRect.x1 - CELL_BORDER_WIDTH, 
+                                    cellRect.y2 - cellRect.y1 - CELL_BORDER_WIDTH);
         }
     }
 
@@ -310,14 +310,14 @@ class BoardPainter {
 
         var textToDraw = " ";
         if (this.boardData.cells[col][row].marked) {
-            this.context.fillStyle = QUESTION_MARK_COLOR; // TO DO
+            this.context.fillStyle = QUESTION_MARK_COLOR;
             textToDraw = QUESTION_MARK;
         } else   
             if (this.boardData.cells[col][row].hasMine()) {
-                this.context.fillStyle = MINE_COLOR; // TO DO
+                this.context.fillStyle = MINE_SYMBOL_COLOR;
                 textToDraw = MINE_SYMBOL;
             } else {    
-                this.context.fillStyle = CELL_VALUE_COLOR; // TO DO
+                this.context.fillStyle = CELL_VALUE_COLOR;
                 if (this.boardData.cells[col][row].value == 0)
                     textToDraw = " ";
                 else    
@@ -341,9 +341,10 @@ class Game {
  
         this.controls = {
             description: {},
-            notification: {},
             time: {},
-            markedCells: {}
+            markedCells: {},
+            notification: {},
+            notificationClasses: {}
         };
         this.controls.description = initData.controls.description;
         this.controls.time = initData.controls.time;
@@ -354,6 +355,9 @@ class Game {
         if (typeof this.controls.description == "object")
             this.controls.description.innerHTML = initData.gameDescription;
     
+        this.controls.notificationClasses.lost = initData.controls.notificationClasses.lost;
+        this.controls.notificationClasses.won = initData.controls.notificationClasses.won;
+
     }
 
     setCanvasEventHandlers() {
@@ -371,29 +375,29 @@ class Game {
         this.intervalID = window.setInterval( function() {_this.updateControls(); }, 1000);
         this.boardPainter.draw();
         this.controls.notification.innerHTML = "";
-        this.controls.button.value = "Сбросить";
+        this.controls.button.value = LABEL_CANCEL;
         this.controls.button.addEventListener("click", cancelGame, {once: true});
     }
 
     cancel() {
         this.stopTiming();        
         this.isGameInProgress = false;
-        this.controls.notification.classList.remove("won");
-        this.controls.notification.classList.add("lost");
-        this.controls.notification.innerHTML = "Остановлено по команде";
+        this.controls.notification.classList.remove(this.controls.notificationClasses.won);
+        this.controls.notification.classList.add(this.controls.notificationClasses.lost);
+        this.controls.notification.innerHTML = MSG_GAME_CANCELLED;
         if (this.boardData.initialized)
             this.boardPainter.draw(true);
-        this.controls.button.value = "Новая игра";  
+        this.controls.button.value = LABEL_NEW_GAME;  
         this.controls.button.addEventListener("click", startNewGame, {once: true});      
     }
 
     win() {
         this.stopTiming();
         this.isGameInProgress = false;
-        this.controls.notification.classList.remove("lost");
-        this.controls.notification.classList.add("won");
-        this.controls.notification.innerHTML = "Ура, победа!";
-        this.controls.button.value = "Новая игра";
+        this.controls.notification.classList.remove(this.controls.notificationClasses.lost);
+        this.controls.notification.classList.add(this.controls.notificationClasses.won);
+        this.controls.notification.innerHTML = MSG_GAME_WON;
+        this.controls.button.value = LABEL_NEW_GAME;
         this.controls.button.removeEventListener("click", cancelGame);      
         this.controls.button.addEventListener("click", startNewGame, {once: true});      
     }
@@ -401,11 +405,11 @@ class Game {
     lose() {
         this.stopTiming();
         this.isGameInProgress = false;
-        this.controls.notification.classList.remove("won");
-        this.controls.notification.classList.add("lost");
-        this.controls.notification.innerHTML = "Ой, ошибка... Попробуйте снова!";
+        this.controls.notification.classList.remove(this.controls.notificationClasses.won);
+        this.controls.notification.classList.add(this.controls.notificationClasses.lost);
+        this.controls.notification.innerHTML = MSG_GAME_LOST;
         this.boardPainter.draw(true);
-        this.controls.button.value = "Новая игра";        
+        this.controls.button.value = LABEL_NEW_GAME;        
         this.controls.button.removeEventListener("click", cancelGame);      
         this.controls.button.addEventListener("click", startNewGame, {once: true});        
     }
@@ -465,7 +469,7 @@ class Game {
         if (! this.isUpdating) {
             this.startUpdate();
             try {
-                var cellData = this.boardPainter.getCellByCoord(e.offsetX, e.offsetY);
+                var cellData = this.boardPainter.getCellDataByCoord(e.offsetX, e.offsetY);
                 if (cellData.col >= 0 && cellData.row >= 0 &&
                     cellData.col < this.boardData.width && cellData.row < this.boardData.height) {
         
@@ -497,7 +501,7 @@ class Game {
             try {
                 e.preventDefault();  
 
-                var cellData = this.boardPainter.getCellByCoord(e.offsetX, e.offsetY);
+                var cellData = this.boardPainter.getCellDataByCoord(e.offsetX, e.offsetY);
 
                 if (cellData.col >= 0 && cellData.row >= 0 && 
                     cellData.col < this.boardData.width && cellData.row < this.boardData.height) {
@@ -574,4 +578,76 @@ function cancelGame() {
 
 function startNewGame() {
     game.start(true);
+}
+
+function getParameters() {
+
+    var result = {};
+    var urlParams = new URLSearchParams(document.location.search);
+
+    var param = urlParams.get("mode");
+    if (param && param.toLocaleLowerCase() == "direct-games") {
+        // Direct Games
+        result = {
+            board: {
+                width: 7,
+                height: 7,
+                cellSize: 40,
+                maxMines: 6 
+            },    
+            canvasElement: document.getElementById("board"),
+            controls: {
+                time: document.getElementById("time-elapsed"),
+                markedCells: document.getElementById("marked-cells"),
+                description: document.getElementById("description"), 
+                notification: document.getElementById("notification"),
+                button: document.getElementById("button"),
+                notificationClasses: {
+                    lost: "lost",
+                    won:  "won"
+                }
+            },
+            gameDescription: "<p>Чтобы открыть клетку &mdash; нажмите её.<br/>" + 
+                             "Чтобы пометить клетку заминированной &mdash; нажмите и удерживайте её.</p>" +
+                             "<p>Игра закончится, когда все клетки с минами помечены, а остальные открыты.</p>"
+        };
+    } else {
+        // Web games
+        result = {
+            board: {
+                width: 10,
+                height: 10,
+                cellSize: 30,
+                maxMines: 8 
+            },    
+            canvasElement: document.getElementById("board"),
+            controls: {
+                time: document.getElementById("time-elapsed"),
+                markedCells: document.getElementById("marked-cells"),
+                description: document.getElementById("description"), 
+                notification: document.getElementById("notification"),
+                button: document.getElementById("button"),
+                notificationClasses: {
+                    lost: "lost",
+                    won:  "won"
+                }
+            },
+            gameDescription: "<p>Чтобы открыть клетку &mdash; щёлкните её.<br/>" + 
+                             "Чтобы пометить клетку заминированной &mdash; щёлкните её правой кнопкой.</p>" +
+                             "<p>Игра закончится, когда все клетки с минами помечены, а остальные открыты.</p>"
+        };
+    }   
+
+    return result;
+}
+
+
+window.onload = function () {
+    var initData = getParameters();
+    game = new Game(initData);
+    game.start();
+
+    // Удалите комментарий со следующих строк ниже
+    // if (vkBridge)
+    //    vkBridge.send("VKWebAppInit", {});
 }

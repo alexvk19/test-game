@@ -34,47 +34,6 @@
             </div>
         </div>
     </body>
-    <script>
-        window.onload = function () {
-    
-    var initData = {
-        board: {
-            width: 10,
-            height: 10,
-            cellSize: 30,
-            maxMines: 8,
-            drawConstants : {}
-        },    
-        canvasElement: document.getElementById("board"),
-        controls: {
-            time: document.getElementById("time-elapsed"),
-            markedCells: document.getElementById("marked-cells"),
-            description: document.getElementById("description"), 
-            notification: document.getElementById("notification"),
-            button: document.getElementById("button")
-        },
-        gameDescription: "<p>Чтобы открыть клетку &mdash; щёлкните её.<br/>" + 
-                         "Чтобы пометить клетку заминированной &mdash; щёлкните её правой кнопкой.</p>" +
-                         "<p>Игра закончится, когда все клетки с минами помечены, а остальные открыты.</p>"
-    }
-
-    /* board = new Board( {width: DEFAULT_BOARD_WIDTH, 
-                            height: DEFAULT_BOARD_HEIGHT, 
-                            mines: DEFAULT_MAX_MINES, 
-                            cellSize: DEFAULT_CELL_SIZE }, canvasElement);
-
-        var controls = {};
-        controls.time = document.getElementById("time-elapsed");
-        controls.markedCells = document.getElementById("marked-cells");
-        game = new Game("", canvasElement, controls);   
-*/
-    game = new Game(initData);
-    game.start();
-    // Удалите комментарий со следующих строк ниже
-    // if (vkBridge)
-    //    vkBridge.send("VKWebAppInit", {});
-}
-    </script>
 </html>
 
 
