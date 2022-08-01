@@ -649,5 +649,39 @@ window.onload = function () {
 
     // Удалите комментарий со следующих строк ниже
     // if (vkBridge)
-    //    vkBridge.send("VKWebAppInit", {});
+    //    vkBridge.send("VKWebAppInit", {})
+    //    .then(data => {console.log("success!"); console.log(data.result); } )
+    //    .catch(error => {console.log("error!");  console.log(error); } );
+}
+
+
+function initBridge(){
+    console.log("Before init ...")
+    if (vkBridge) {
+        console.log("vkBridge has been defined");
+        vkBridge.send("VKWebAppInit");
+    }
+    console.log("After init ...")
+}
+
+function showAd() {
+    console.log("Before show order box ...")
+    vkBridge.send("VKWebAppShowOrderBox", { 
+        type: "item",
+        item: "item_id_123"
+      })
+      .then(data => console.log(data.status))  
+      .catch(error => console.log(error));
+    console.log("After show order box ...")
+
+    console.log("Before check ads ...")
+    var r = vkBridge.send("VKWebAppCheckNativeAds", {"ad_format": "interstitial"});
+    console.log(r);
+    console.log("After check ads ...")
+
+    console.log("Before show native ads ...")
+    vkBridge.send("VKWebAppShowNativeAds", {ad_format:"interstitial"})
+    .then(data => console.log(data.result))
+    .catch(error => console.log(error));
+    console.log("After show native ads ...")
 }
