@@ -652,6 +652,9 @@ window.onload = function () {
     //    vkBridge.send("VKWebAppInit", {})
     //    .then(data => {console.log("success!"); console.log(data.result); } )
     //    .catch(error => {console.log("error!");  console.log(error); } );
+
+    document.getElementById("init-bridge-button").addEventListener("click", initBridge);   
+    document.getElementById("test-button").addEventListener("click", showAd);
 }
 
 
