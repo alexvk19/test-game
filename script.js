@@ -663,7 +663,7 @@ function showAd1() {
     console.log("Вызов VKWebAppShowNativeAds...")
     var d1 = Date.now();
     vkBridge.send("VKWebAppShowNativeAds", {ad_format:"interstitial"})
-        .then(data => {var d4 = Date.now() - d1; console.log("promise->then"); console.log(data.result); console.log("Длительность вызова: " + d4 + " ms"); })
+        .then(data => {var d4 = Date.now() - d1; console.log("promise->then"); console.log(data.result); console.log("Из промиса: Длительность вызова: " + d4 + " ms"); })
         .catch(error => {console.log("promise->error"); console.log(error); });
     var d2 = Date.now();
     var d3 = d2 - d1;
@@ -674,7 +674,7 @@ function showAd2() {
     console.log("Вызов VKWebAppCheckNativeAds (подготовка) ...")
     var d1 = Date.now();
     var r = vkBridge.send("VKWebAppCheckNativeAds", {"ad_format": "interstitial"})
-        .then(data => {var d4 = Date.now() - d1; console.log("promise->then"); console.log(data.result); console.log("Длительность вызова: " + d4 + " ms"); })
+        .then(data => {var d4 = Date.now() - d1; console.log("promise->then"); console.log(data.result); console.log("Из промиса: Длительность вызова: " + d4 + " ms"); })
         .catch(error => {console.log("promise->error"); console.log(error); });
     console.log(r);
     var d2 = Date.now();
@@ -684,7 +684,7 @@ function showAd2() {
     console.log("Вызов VKWebAppShowNativeAds...")
     d1 = Date.now();
     vkBridge.send("VKWebAppShowNativeAds", {ad_format:"interstitial"})
-        .then(data => {var d4 = Date.now() - d1; console.log("promise->then"); console.log(data.result); console.log("Длительность вызова: " + d4 + " ms"); })
+        .then(data => {var d4 = Date.now() - d1; console.log("promise->then"); console.log(data.result); console.log("Из промиса: Длительность вызова: " + d4 + " ms"); })
         .catch(error => {console.log("promise->error"); console.log(error); });
     d2 = Date.now();
     console.log("After show native ads ...");
@@ -701,7 +701,7 @@ function showAd3() {
             {var d4 = Date.now() - d1; 
              console.log("promise->then"); 
              console.log(data.result); 
-             console.log("Длительность вызова: " + d4 + " ms");
+             console.log("Из промиса: Длительность вызова: " + d4 + " ms");
              document.getElementById("banner").innerHTML = data; })
         .catch(error => {console.log("promise->error"); console.log(error); });
     var d2 = Date.now();
