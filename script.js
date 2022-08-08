@@ -659,56 +659,45 @@ window.onload = function () {
 }
 
 
-function initBridge(){
-    console.log("Before init ...")
-    if (vkBridge) {
-        console.log("vkBridge has been defined");
-        vkBridge.send("VKWebAppInit");
-    }
-    console.log("After init ...")
-}
-
 function showAd1() {
+    console.log("Вызов VKWebAppShowNativeAds...")
     var d1 = Date.now();
-    console.log("Before show native ads ...")
     vkBridge.send("VKWebAppShowNativeAds", {ad_format:"interstitial"})
-        .then(data => console.log(data.result))
-        .catch(error => console.log(error));
+        .then(data => {console.log("promise->then"); console.log(data.result); })
+        .catch(error => {console.log("promise->error"); console.log(error); });
     var d2 = Date.now();
-    console.log("After show native ads ...")
-    console.log(d2);
-    console.log(d2-d1);
+    var d3 = d2 - d1;
+    console.log("Длительность вызова: " + d3 + " ms");
 }
 
 function showAd2() {
+    console.log("Вызов VKWebAppCheckNativeAds ...")
     var d1 = Date.now();
-    console.log("Before check ads ...")
     var r = vkBridge.send("VKWebAppCheckNativeAds", {"ad_format": "interstitial"});
     console.log(r);
     var d2 = Date.now();
-    console.log("After check ads ...")
-    console.log(d2 - d1);
+    var d3 = d2 - d1;
+    console.log("Длительность вызова: " + d3 + " ms");
 
-    console.log("Before show native ads ...")
+    console.log("Вызов VKWebAppShowNativeAds...")
     d1 = Date.now();
     vkBridge.send("VKWebAppShowNativeAds", {ad_format:"interstitial"})
-        .then(data => console.log(data.result))
-        .catch(error => console.log(error));
+        .then(data => {console.log("promise->then"); console.log(data.result); })
+        .catch(error => {console.log("promise->error"); console.log(error); });
     d2 = Date.now();
     console.log("After show native ads ...");
-    console.log(d2);
-    console.log(d2 - d1);
+    var d3 = d2 - d1;
+    console.log("Длительность вызова: " + d3 + " ms");
 }
 
 
 function showAd3() {
+    console.log("Вызов VKWebAppGetAds...")
     var d1 = Date.now();
-    console.log("Before getting banner data ...")
     vkBridge.send("VKWebAppGetAds")
-        .then(data => console.log(data.result))
-        .catch(error => console.log(error));
+        .then(data => {console.log("promise->then"); console.log(data.result); })
+        .catch(error => {console.log("promise->error"); console.log(error); });
     var d2 = Date.now();
-    console.log("After getting banner data ...")
-    console.log(d2);
-    console.log(d2-d1);
+    var d3 = d2 - d1;
+    console.log("Длительность вызова: " + d3 + " ms");
 }
