@@ -655,6 +655,7 @@ window.onload = function () {
 
     document.getElementById("test-button-1").addEventListener("click", showAd1);   
     document.getElementById("test-button-2").addEventListener("click", showAd2);
+    document.getElementById("test-button-3").addEventListener("click", showAd3);
 }
 
 
@@ -697,4 +698,17 @@ function showAd2() {
     console.log("After show native ads ...");
     console.log(d2);
     console.log(d2 - d1);
+}
+
+
+function showAd3() {
+    var d1 = Date.now();
+    console.log("Before getting banner data ...")
+    vkBridge.send("VKWebAppGetAds")
+        .then(data => console.log(data.result))
+        .catch(error => console.log(error));
+    var d2 = Date.now();
+    console.log("After getting banner data ...")
+    console.log(d2);
+    console.log(d2-d1);
 }
