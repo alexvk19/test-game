@@ -697,7 +697,12 @@ function showAd3() {
     console.log("Вызов VKWebAppGetAds...")
     var d1 = Date.now();
     vkBridge.send("VKWebAppGetAds")
-        .then(data => {var d4 = Date.now() - d1; console.log("promise->then"); console.log(data.result); console.log("Длительность вызова: " + d4 + " ms"); })
+        .then(data => 
+            {var d4 = Date.now() - d1; 
+             console.log("promise->then"); 
+             console.log(data.result); 
+             console.log("Длительность вызова: " + d4 + " ms");
+             document.getElementById("banner").innerHTML = data; })
         .catch(error => {console.log("promise->error"); console.log(error); });
     var d2 = Date.now();
     var d3 = d2 - d1;
