@@ -607,8 +607,7 @@ function getParameters() {
                     won:  "won"
                 }
             },
-            gameDescription: "<p><b>ЭТО DIRECT-GAMES-ИГРА</b></p>"+
-							 "<p>Чтобы открыть клетку &mdash; нажмите её.<br/>" + 
+            gameDescription: "<p>Чтобы открыть клетку &mdash; нажмите её.<br/>" + 
                              "Чтобы пометить клетку заминированной &mdash; нажмите и удерживайте её.</p>" +
                              "<p>Игра закончится, когда все клетки с минами помечены, а остальные открыты.</p>"
         };
@@ -633,8 +632,7 @@ function getParameters() {
                     won:  "won"
                 }
             },
-            gameDescription: "<p><b>ЭТО WEB-ИГРА</b></p>"+
-			                 "<p>Чтобы открыть клетку &mdash; щёлкните её.<br/>" + 
+            gameDescription: "<p>Чтобы открыть клетку &mdash; щёлкните её.<br/>" + 
                              "Чтобы пометить клетку заминированной &mdash; щёлкните её правой кнопкой.</p>" +
                              "<p>Игра закончится, когда все клетки с минами помечены, а остальные открыты.</p>"
         };
@@ -650,13 +648,13 @@ window.onload = function () {
     game.start();
 
     // Удалите комментарий со следующих строк ниже
-    // if (vkBridge)
-    //    vkBridge.send("VKWebAppInit", {})
-    //    .then(data => {console.log("success!"); console.log(data.result); } )
-    //    .catch(error => {console.log("error!");  console.log(error); } );
+    if (vkBridge)
+        vkBridge.send("VKWebAppInit", {})
+        .then(data => {console.log("success!"); console.log(data.result); } )
+        .catch(error => {console.log("error!");  console.log(error); } );
 
-    document.getElementById("init-bridge-button").addEventListener("click", initBridge);   
-    document.getElementById("test-button").addEventListener("click", showAd);
+    document.getElementById("test-button-1").addEventListener("click", showAd1);   
+    document.getElementById("test-button-2").addEventListener("click", showAd2);
 }
 
 
@@ -669,24 +667,34 @@ function initBridge(){
     console.log("After init ...")
 }
 
-function showAd() {
-    console.log("Before show order box ...")
-    vkBridge.send("VKWebAppShowOrderBox", { 
-        type: "item",
-        item: "item_id_123"
-      })
-      .then(data => console.log(data.status))  
-      .catch(error => console.log(error));
-    console.log("After show order box ...")
+function showAd1() {
+    var d1 = Date.now();
+    console.log("Before show native ads ...")
+    vkBridge.send("VKWebAppShowNativeAds", {ad_format:"interstitial"})
+        .then(data => console.log(data.result))
+        .catch(error => console.log(error));
+    var d2 = Date.now();
+    console.log("After show native ads ...")
+    console.log(d2);
+    console.log(d2-d1);
+}
 
+function showAd2() {
+    var d1 = Date.now();
     console.log("Before check ads ...")
     var r = vkBridge.send("VKWebAppCheckNativeAds", {"ad_format": "interstitial"});
     console.log(r);
+    var d2 = Date.now();
     console.log("After check ads ...")
+    console.log(d2 - d1);
 
     console.log("Before show native ads ...")
+    d1 = Date.now();
     vkBridge.send("VKWebAppShowNativeAds", {ad_format:"interstitial"})
-    .then(data => console.log(data.result))
-    .catch(error => console.log(error));
-    console.log("After show native ads ...")
+        .then(data => console.log(data.result))
+        .catch(error => console.log(error));
+    d2 = Date.now();
+    console.log("After show native ads ...");
+    console.log(d2);
+    console.log(d2 - d1);
 }
