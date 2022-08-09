@@ -654,42 +654,40 @@ window.onload = function () {
         .catch(error => {console.log("error!");  console.log(error); } );
 
     document.getElementById("test-button-1").addEventListener("click", showAd1);   
-    document.getElementById("test-button-2").addEventListener("click", showAd2);
-    document.getElementById("test-button-3").addEventListener("click", showAd3);
 }
-
 
 function showAd1() {
-    console.log("Вызов VKWebAppShowNativeAds...")
-    var d1 = Date.now();
-    vkBridge.send("VKWebAppShowNativeAds", {ad_format:"interstitial"})
-        .then(data => {var d4 = Date.now() - d1; console.log("promise->then"); console.log(data.result); console.log("Из промиса: Длительность вызова: " + d4 + " ms"); })
-        .catch(error => {console.log("promise->error"); console.log(error); });
-    var d2 = Date.now();
-    var d3 = d2 - d1;
-    console.log("Длительность вызова: " + d3 + " ms");
+    vkBridge.send("VKWebAppCheckNativeAds", {ad_format:"rewarded"})
+        .then(data => 
+                { console.log("promise->then, data: " + data); 
+                  if (data.result) {
+                    let label = document.createElement("span");
+                    label.innerHTML = "5 сек ролик, чтобы прокачать героя";
+                    let btn = document.createElement("input");
+                    btn.type = "button";
+                    btn.value = "Посмотреть";
+                    btn.addEventListener("click", fooButtonClick);
+                    document.getElementById("my-form").appendChild(label);
+                    document.getElementById("my-form").appendChild(btn);
+                  } else {
+                    console.log("No ad materials have been loaded.");
+                  }     
+                })
+        .catch(error => 
+                { console.log("promise->error"); console.log(error); }
+            );
+
 }
 
-function showAd2() {
-    console.log("Вызов VKWebAppCheckNativeAds (подготовка) ...")
-    var d1 = Date.now();
-    var r = vkBridge.send("VKWebAppCheckNativeAds", {"ad_format": "interstitial"})
-        .then(data => {var d4 = Date.now() - d1; console.log("promise->then"); console.log(data.result); console.log("Из промиса: Длительность вызова: " + d4 + " ms"); })
-        .catch(error => {console.log("promise->error"); console.log(error); });
-    console.log(r);
-    var d2 = Date.now();
-    var d3 = d2 - d1;
-    console.log("Длительность вызова: " + d3 + " ms");
-
-    console.log("Вызов VKWebAppShowNativeAds...")
-    d1 = Date.now();
-    vkBridge.send("VKWebAppShowNativeAds", {ad_format:"interstitial"})
-        .then(data => {var d4 = Date.now() - d1; console.log("promise->then"); console.log(data.result); console.log("Из промиса: Длительность вызова: " + d4 + " ms"); })
-        .catch(error => {console.log("promise->error"); console.log(error); });
-    d2 = Date.now();
-    console.log("After show native ads ...");
-    var d3 = d2 - d1;
-    console.log("Длительность вызова: " + d3 + " ms");
+function fooButtonClick() {
+    vkBridge.send("VKWebAppShowNativeAds", {ad_format:"rewarded"})
+        .then(data => { 
+            if (data.result)
+                console.log("Реклама была показана");
+            else
+                console.log("Ошибка");
+        })
+        .catch(error => {console.log(error); });
 }
 
 
