@@ -657,7 +657,7 @@ window.onload = function () {
 }
 
 function showAd1() {
-    vkBridge.send("VKWebAppCheckNativeAds", {ad_format:"rewarded"})
+    vkBridge.send("VKWebAppCheckNativeAds", {ad_format:"reward"})
         .then(data => 
                 { console.log("promise->then, data: " + data); 
                   if (data.result) {
@@ -680,7 +680,7 @@ function showAd1() {
 }
 
 function fooButtonClick() {
-    vkBridge.send("VKWebAppShowNativeAds", {ad_format:"rewarded"})
+    vkBridge.send("VKWebAppShowNativeAds", {ad_format:"reward"})
         .then(data => { 
             if (data.result)
                 console.log("Реклама была показана");
