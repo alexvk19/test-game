@@ -653,7 +653,21 @@ window.onload = function () {
         .then(data => {console.log("success!"); console.log(data.result); } )
         .catch(error => {console.log("error!");  console.log(error); } );
 
-    document.getElementById("test-button-1").addEventListener("click", showAd1);   
+    document.getElementById("test-button-1").addEventListener("click", showAd1);
+    document.getElementById("test-button-misc").addEventListener("click", testMisc);  
+}
+
+function testMisc(e) {
+    console.log("Test2 started")
+    var element = document.getElementById("test-results");
+    vkBridge.send("VKWebAppGetAds")
+    .then( data => { 
+        element.innerText = data;
+    })
+    .catch (error => {
+        element.value = error.error_string;
+        element.value += error.error_data;  
+    } );
 }
 
 function showAd1() {
