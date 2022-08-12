@@ -653,7 +653,12 @@ window.onload = function () {
         .then(data => {console.log("success!"); console.log(data.result); } )
         .catch(error => {console.log("error!");  console.log(error); } );
 
+    if (vkBridge) 
+        vkBridge.subscribe(subscribeToEvents);
+
+
     document.getElementById("test-button-1").addEventListener("click", showAd1);
+    document.getElementById("test-button-2").addEventListener("click", showAd2);    
     document.getElementById("test-button-misc").addEventListener("click", testMisc);  
 }
 
@@ -707,19 +712,19 @@ function fooButtonClick() {
         .catch(error => {console.log(error); });
 }
 
+var weHaveSomethingPreLoaded = false;
 
-function showAd3() {
-    console.log("Вызов VKWebAppGetAds...")
-    var d1 = Date.now();
-    vkBridge.send("VKWebAppGetAds")
-        .then(data => 
-            {var d4 = Date.now() - d1; 
-             console.log("promise->then"); 
-             console.log(data.result); 
-             console.log("Из промиса: Длительность вызова: " + d4 + " ms");
-             document.getElementById("banner").innerHTML = data; })
-        .catch(error => {console.log("promise->error"); console.log(error); });
-    var d2 = Date.now();
-    var d3 = d2 - d1;
-    console.log("Длительность вызова: " + d3 + " ms");
+function subscribeToEvents(e) {
+    console.log(e.detail.type);
+    if (e.detail.type == "VKWebAppCheckNativeAdsResult") {
+        weHaveSomethingPreLoaded = true;
+        console.log(e);
+    }
+}
+
+function showAd2() {
+    if (weHaveSomethingPreLoaded) {
+        weHaveSomethingPreLoaded = false;
+        vkBridge.send("VKWebAppShowNativeAds", {"ad_format": "reward"});
+    }
 }
