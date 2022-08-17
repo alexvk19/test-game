@@ -729,7 +729,8 @@ function eventHandler(e) {
             break;
         case "VKWebAppCheckNativeAdsFailed":
             console.log("Ошибка!")      
-            console.log(data.error_type, data.error_data);      
+            console.log(data.error_type, data.error_data);     
+            console.log(e); 
             break;
         default:
             console.log(e);
