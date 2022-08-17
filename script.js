@@ -654,7 +654,7 @@ window.onload = function () {
         .catch(error => {console.log("error!");  console.log(error); } );
 
     if (vkBridge) 
-        vkBridge.subscribe(subscribeToEvents);
+        vkBridge.subscribe(eventHandler);
 
 
     document.getElementById("test-button-1").addEventListener("click", showAd1);
@@ -714,12 +714,24 @@ function fooButtonClick() {
 
 var weHaveSomethingPreLoaded = false;
 
-function subscribeToEvents(e) {
+function eventHandler(e) {
     console.log(e.detail.type);
-    if (e.detail.type == "VKWebAppCheckNativeAdsResult") {
-        weHaveSomethingPreLoaded = true;
-        console.log(e);
-    }
+    switch(e.detail.type) {
+        case "VKWebAppCheckNativeAdsResult":
+            console.log("Запрос прошел.");
+            if (e.detail.data.result)
+                console.log("Предзагруженные материалы есть");
+            else
+                console.log("Рекламы нет");     
+            console.log(e);
+            break;
+        case "VKWebAppCheckNativeAdsFailed":
+            console.log("Ошибка!")      
+            console.log(e);      
+            break;
+        default:
+            console.log(e);
+        }
 }
 
 function showAd2() {
