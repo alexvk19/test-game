@@ -658,7 +658,8 @@ window.onload = function () {
 
 
     document.getElementById("test-button-1").addEventListener("click", showAd1);
-    document.getElementById("test-button-2").addEventListener("click", showAd2);    
+    document.getElementById("test-button-2").addEventListener("click", showAd2);   
+    document.getElementById("test-button-3").addEventListener("click", emulateFailure);   
     document.getElementById("test-button-misc").addEventListener("click", testMisc);  
 }
 
@@ -716,10 +717,11 @@ var weHaveSomethingPreLoaded = false;
 
 function eventHandler(e) {
     console.log(e.detail.type);
-    switch(e.detail.type) {
+    const { type, data } = e.detail;
+    switch(type) {
         case "VKWebAppCheckNativeAdsResult":
             console.log("Запрос прошел.");
-            if (e.detail.data.result)
+            if (data.result)
                 console.log("Предзагруженные материалы есть");
             else
                 console.log("Рекламы нет");     
@@ -727,7 +729,7 @@ function eventHandler(e) {
             break;
         case "VKWebAppCheckNativeAdsFailed":
             console.log("Ошибка!")      
-            console.log(e);      
+            console.log(data.error_type, data.error_data);      
             break;
         default:
             console.log(e);
@@ -739,4 +741,8 @@ function showAd2() {
         weHaveSomethingPreLoaded = false;
         vkBridge.send("VKWebAppShowNativeAds", {"ad_format": "reward"});
     }
+}
+
+function emulateFailure() {
+    vkBridge.send("VKWebAppCheckNativeAds", {"ad_format": "adadasd"});
 }
