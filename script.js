@@ -659,21 +659,30 @@ window.onload = function () {
 
     document.getElementById("test-button-1").addEventListener("click", showAd1);
     document.getElementById("test-button-2").addEventListener("click", showAd2);   
-    document.getElementById("test-button-3").addEventListener("click", emulateFailure);   
+    document.getElementById("test-button-3").addEventListener("click", emulateFailure);
+    document.getElementById("test-button-4").addEventListener("click", test4);    
     document.getElementById("test-button-misc").addEventListener("click", testMisc);  
 }
 
 function testMisc(e) {
-    console.log("Test2 started")
+    console.log("Banner test started")
     var element = document.getElementById("test-results");
     vkBridge.send("VKWebAppGetAds")
     .then( data => { 
+        console.log(data);
         element.innerText = data;
     })
     .catch (error => {
+        console.log(error);
         element.value = error.error_string;
         element.value += error.error_data;  
     } );
+}
+
+function test4() {
+    vkBridge.send("VKWebAppAddToFavorites")
+     .then( (data) => { console.log("Then: Success", data) })
+     .catch( (error) => { console.log("Catch: Error", error) });
 }
 
 function showAd1() {
@@ -683,7 +692,7 @@ function showAd1() {
                   console.log(data); 
                   if (data.result) {
                     let label = document.createElement("span");
-                    label.innerHTML = "5 сек ролик, чтобы прокачать героя";
+                    label.innerHTML = "Посмотрите ролик, чтобы прокачать героя";
                     let btn = document.createElement("input");
                     btn.type = "button";
                     btn.value = "Посмотреть";
@@ -730,6 +739,7 @@ function eventHandler(e) {
         case "VKWebAppCheckNativeAdsFailed":
             console.log("Ошибка!")      
             console.log(data.error_type, data.error_data);     
+            console.log("Ошибка: " + data.error_type, data.error_data);
             console.log(e); 
             break;
         default:
