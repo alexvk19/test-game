@@ -665,17 +665,20 @@ window.onload = function () {
 }
 
 function testMisc(e) {
-    console.log("Banner test started")
-    var element = document.getElementById("test-results");
-    vkBridge.send("VKWebAppGetAds")
+    console.log('Message test started')
+    var element = document.getElementById('test-results');
+
+    const GROUP_ID = 215806856;
+
+    vkBridge.send('VKWebAppAllowMessagesFromGroup', 
+       { group_id: GROUP_ID, key: 'test-key-1'})
     .then( data => { 
-        console.log(data);
-        element.innerText = data;
+        console.log('Message test result: .then()', data);
+        console.log('Message test is over');  
     })
     .catch (error => {
-        console.log(error);
-        element.value = error.error_string;
-        element.value += error.error_data;  
+        console.log('Message test result: .catch()', error);
+        console.log('Message test is over');
     } );
 }
 
