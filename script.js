@@ -668,7 +668,7 @@ function testMisc(e) {
     console.log('Message test started')
     var element = document.getElementById('test-results');
 
-    const GROUP_ID = 215806856;
+    const GROUP_ID = 216317505; // 215806856;
 
     vkBridge.send('VKWebAppAllowMessagesFromGroup', 
        { group_id: GROUP_ID, key: 'test-key-1'})
