@@ -673,10 +673,12 @@ function testMisc(e) {
     vkBridge.send('VKWebAppAllowMessagesFromGroup', 
        { group_id: GROUP_ID, key: 'test-key-1'})
     .then( data => { 
+        console.log(data);
         console.log('Message test result: .then()', data);
         console.log('Message test is over');  
     })
     .catch (error => {
+        console.log(error);
         console.log('Message test result: .catch()', error);
         console.log('Message test is over');
     } );
