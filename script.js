@@ -647,6 +647,8 @@ window.onload = function () {
     game = new Game(initData);
     game.start();
 
+
+
     // Удалите комментарий со следующих строк ниже
     if (vkBridge)
         vkBridge.send("VKWebAppInit", {})
@@ -656,12 +658,39 @@ window.onload = function () {
     if (vkBridge) 
         vkBridge.subscribe(eventHandler);
 
+    let h = document.getElementById("additionalTitle");
+    if (h) 
+      h.innerHTML = " — через туннель"; 
 
-    document.getElementById("test-button-1").addEventListener("click", showAd1);
-    document.getElementById("test-button-2").addEventListener("click", showAd2);   
-    document.getElementById("test-button-3").addEventListener("click", emulateFailure);
-    document.getElementById("test-button-4").addEventListener("click", test4);    
-    document.getElementById("test-button-misc").addEventListener("click", testMisc);  
+    // document.getElementById("test-button-1").addEventListener("click", showAd1);
+    document.getElementById("test-button-1").addEventListener("click", sendMessageFromGroup);
+    //document.getElementById("test-button-2").addEventListener("click", showAd2);   
+    //document.getElementById("test-button-3").addEventListener("click", emulateFailure);
+    // document.getElementById("test-button-4").addEventListener("click", test4);    
+    document.getElementById("test-button-5").addEventListener("click", testPurchase); 
+    document.getElementById("test-button-5err").addEventListener("click", testPurchaseErr);    
+    document.getElementById("test-button-6").addEventListener("click", testSubscription); 
+    document.getElementById("test-button-6err").addEventListener("click", testSubscriptionErr);   
+    document.getElementById("test-button-7").addEventListener("click", testSubscriptionCancel); 
+    document.getElementById("test-button-7err").addEventListener("click", testSubscriptionCancelErr);
+    document.getElementById("test-button-8").addEventListener("click", testSubscriptionResume); 
+    document.getElementById("test-button-8err").addEventListener("click", testSubscriptionResumeErr);   
+    document.getElementById("test-button-misc").addEventListener("click", testMisc);   
+}
+
+function sendMEssageFromGroup(e) {
+  console.log('Event: ', e);
+  vkBridge.send('VKWebAppAllowMessagesFromGroup', {
+    group_id: 216317416,
+    key: '743784474' 
+  })
+  .then( (data) => {
+    console.log('Result. .then(): ', data);
+  })
+  .catch( (e) => {
+    console.log('Result. .catch(): ', e);
+  })
+
 }
 
 function testMisc(e) {
@@ -761,4 +790,120 @@ function showAd2() {
 
 function emulateFailure() {
     vkBridge.send("VKWebAppCheckNativeAds", {"ad_format": "adadasd"});
+}
+
+function testPurchase() {
+    vkBridge.send('VKWebAppShowOrderBox', 
+    { 
+      type: 'item',
+      item: 'item1' // 'sale_item_dom_1',
+    })
+    .then( (data) => { 
+        console.log('Test purchase. Success:', data); 
+    } ) 
+    .catch( (e) => { console.log('Test purchase. Error:', e); } )
+}
+
+function testPurchaseErr() {
+    vkBridge.send('VKWebAppAddToProfile', {ttl: 0})
+      .then( (data) => { console.log('Test purchase. Success:', data); }) 
+      .catch( (e) => { console.log('Test purchase. Error:', e); });
+
+    /* 
+    vkBridge.send('VKWebAppShowOrderBox', 
+    { 
+      type: 'item',
+      item: 'sale_item_err1_1',
+    })
+    .then( (data) => { console.log('Test purchase. Success:', data); } ) 
+    .catch( (e) => { console.log('Test purchase. Error:', e); } ) */
+}
+
+function testSubscription(){
+
+    const SUBSCRIPTION_TO_BUY = 'sale_item_subscription_1';
+
+    console.log(`Buying a subscription: '${SUBSCRIPTION_TO_BUY}'...`);
+    
+    vkBridge.send('VKWebAppShowSubscriptionBox', 
+    { 
+      action: 'create',
+      item: SUBSCRIPTION_TO_BUY,
+    })
+    .then( (data) => { 
+        console.log('Buying subscription. Success:', data);
+        let elem = document.getElementById('spanSubscriptionID');
+        elem.value = data.subscriptionId; 
+    }) 
+    .catch( (e) => { 
+        console.log('Buying subscription. Error:', e);
+    })
+}
+
+function testSubscriptionErr(){
+    vkBridge.send('VKWebAppShowSubscriptionBox', 
+    { 
+      action: 'create',
+      item: 'sale_item_subscription_err_1',
+    })
+    .then( (data) => { console.log('Test subscription. Success:', data); } ) 
+    .catch( (e) => { console.log('Test subscription. Error:', e); } )
+}
+
+function testSubscriptionCancel(){
+    let elem = document.getElementById('spanSubscriptionID');
+    let subscriptionId = elem.value;
+    
+    console.log('Cancelling the subscription: ' + subscriptionId);
+
+    vkBridge.send('VKWebAppShowSubscriptionBox', 
+    { 
+      action: 'cancel',
+      subscription_id: subscriptionId
+    })
+    .then( (data) => { 
+        console.log('Cancelling subscription. Success:', data); 
+    }) 
+    .catch( (e) => {
+        console.log('Cancelling subscription. Error:', e);
+    });
+}
+
+function testSubscriptionCancelErr(){
+    vkBridge.send('VKWebAppShowSubscriptionBox', 
+    { 
+      action: 'cancel',
+      item: 'sale_item_subscription_err_1',
+    })
+    .then( (data) => { console.log('Test subscription cancelling. Success:', data); } ) 
+    .catch( (e) => { console.log('Test subscription cancelling. Error:', e); } )
+}
+
+function testSubscriptionResume(){
+    let elem = document.getElementById('spanSubscriptionID');
+    let subscriptionId = elem.value;
+    console.log('Resuming the subscription: ' + subscriptionId);
+    
+    vkBridge.send('VKWebAppShowSubscriptionBox', 
+    { 
+      action: 'resume',
+      // item: 'sale_item_subscription_2',
+      subscription_id: subscriptionId
+    })
+    .then( (data) => { 
+        console.log('Resuming subscription. Success:', data); 
+    }) 
+    .catch( (e) => { 
+        console.log('Resuming subscription. Error:', e);
+    });
+}
+
+function testSubscriptionResumeErr(){
+    vkBridge.send('VKWebAppShowSubscriptionBox', 
+    { 
+      action: 'resume',
+      item: 'sale_item_subscription_err_1',
+    })
+    .then( (data) => { console.log('Test subscription cancelling. Success:', data); } ) 
+    .catch( (e) => { console.log('Test subscription cancelling. Error:', e); } )
 }
