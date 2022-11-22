@@ -678,7 +678,7 @@ window.onload = function () {
     document.getElementById("test-button-misc").addEventListener("click", testMisc);   
 }
 
-function sendMEssageFromGroup(e) {
+function sendMessageFromGroup(e) {
   console.log('Event: ', e);
   vkBridge.send('VKWebAppAllowMessagesFromGroup', {
     group_id: 216317416,
