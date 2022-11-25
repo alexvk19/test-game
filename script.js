@@ -664,7 +664,7 @@ window.onload = function () {
 
     // document.getElementById("test-button-1").addEventListener("click", showAd1);
     document.getElementById("test-button-1").addEventListener("click", sendMessageFromGroup);
-    //document.getElementById("test-button-2").addEventListener("click", showAd2);   
+    document.getElementById("test-button-2").addEventListener("click", showAd2);   
     //document.getElementById("test-button-3").addEventListener("click", emulateFailure);
     // document.getElementById("test-button-4").addEventListener("click", test4);    
     document.getElementById("test-button-5").addEventListener("click", testPurchase); 
@@ -782,10 +782,28 @@ function eventHandler(e) {
 }
 
 function showAd2() {
-    if (weHaveSomethingPreLoaded) {
+    /* if (weHaveSomethingPreLoaded) {
         weHaveSomethingPreLoaded = false;
         vkBridge.send("VKWebAppShowNativeAds", {"ad_format": "reward"});
-    }
+    } */
+
+    // Проверяем, добавлена ли игра на главный экран
+    vkBridge.send('VKWebAppAddToHomeScreenInfo')
+      .then( (data) => {
+        if (! data.is_added_to_home_screen) { // Если не добавлена,
+            vkBridge.send('VKWebAppAddToHomeScreen') //  то добавляем
+              .then( (data) => {
+                if (data.result) {
+                  alert('Добавлена!');
+                } else {
+                  alert('Не добавлена!');
+                }
+            })
+            .catch( (e) => { alert('Ошибка добавления! ' + e);})    
+        }
+
+      })
+      .catch( (e) => { alert('Ошибка проверки! ' + e); });  
 }
 
 function emulateFailure() {
