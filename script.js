@@ -664,9 +664,9 @@ window.onload = function () {
 
     // document.getElementById("test-button-1").addEventListener("click", showAd1);
     document.getElementById("test-button-1").addEventListener("click", sendMessageFromGroup);
-    document.getElementById("test-button-2").addEventListener("click", showAd2);   
-    //document.getElementById("test-button-3").addEventListener("click", emulateFailure);
-    // document.getElementById("test-button-4").addEventListener("click", test4);    
+    // document.getElementById("test-button-2").addEventListener("click", showAd2);   
+    document.getElementById("test-button-3").addEventListener("click", emulateFailure);
+    document.getElementById("test-button-4").addEventListener("click", test4);    
     document.getElementById("test-button-5").addEventListener("click", testPurchase); 
     document.getElementById("test-button-5err").addEventListener("click", testPurchaseErr);    
     document.getElementById("test-button-6").addEventListener("click", testSubscription); 
@@ -714,9 +714,19 @@ function testMisc(e) {
 }
 
 function test4() {
-    vkBridge.send("VKWebAppAddToFavorites")
+    /* vkBridge.send("VKWebAppAddToFavorites")
      .then( (data) => { console.log("Then: Success", data) })
-     .catch( (error) => { console.log("Catch: Error", error) });
+     .catch( (error) => { console.log("Catch: Error", error) }); */
+    
+     vkBridge.send('VKWebAppShowSurvey', /* {test_mode: true} */ )
+     .then( (data) => {
+       console.log('Show.then( data ): ', data);
+     })
+     .catch( (error) => {
+       console.log('Show.catch( error ):  ', error);
+     })
+
+
 }
 
 function showAd1() {
@@ -809,7 +819,27 @@ function showAd2() {
 }
 
 function emulateFailure() {
-    vkBridge.send("VKWebAppCheckNativeAds", {"ad_format": "adadasd"});
+    // vkBridge.send("VKWebAppCheckNativeAds", {"ad_format": "adadasd"});
+
+    vkBridge.send('VKWebAppCheckSurvey', /* {test_mode: true} */)
+      .then( (data) => {
+        console.log('Check.then( data ): ', data);
+      })
+      .catch( (error) => {
+        console.log('Check.catch( error ):  ', error);
+      })
+
+    /* var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "do?action=feed", true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      // Response
+      var response = this.responseText; 
+      console.log(response);
+   }
+};
+xhttp.send(); */
 }
 
 function testPurchase() {
