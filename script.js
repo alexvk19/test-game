@@ -843,6 +843,15 @@ xhttp.send(); */
 }
 
 function testPurchase() {
+
+    vkBridge.send('VKWebAppShowInviteBox')
+      .then( (data) => {
+        console.log('.then() result: ', data);
+      })
+      .catch( (e) => {
+        console.log('.catch() result: ', e);
+      })
+    /*
     vkBridge.send('VKWebAppShowOrderBox', 
     { 
       type: 'item',
@@ -852,6 +861,7 @@ function testPurchase() {
         console.log('Test purchase. Success:', data); 
     } ) 
     .catch( (e) => { console.log('Test purchase. Error:', e); } )
+    */
 }
 
 function testPurchaseErr() {
