@@ -819,15 +819,23 @@ function showAd2() {
 }
 
 function emulateFailure() {
+
+    vkBridge.send('VKWebAppShowRequestBox', {
+        uuid: 743784474,
+        requestKey: 12345,
+        message: 'Привет, пожалуйста, отправь мне кирку с длинной ручкой и 20 талеров в игре Пещера Горного Короля.',
+        attachment: 'https://vk.com/app8216869'
+    })
+
     // vkBridge.send("VKWebAppCheckNativeAds", {"ad_format": "adadasd"});
 
-    vkBridge.send('VKWebAppCheckSurvey', /* {test_mode: true} */)
+    /* vkBridge.send('VKWebAppCheckSurvey', /* {test_mode: true} */)
       .then( (data) => {
         console.log('Check.then( data ): ', data);
       })
       .catch( (error) => {
         console.log('Check.catch( error ):  ', error);
-      })
+      }) */
 
     /* var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "do?action=feed", true);
