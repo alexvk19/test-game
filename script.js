@@ -829,7 +829,7 @@ function emulateFailure() {
 
     // vkBridge.send("VKWebAppCheckNativeAds", {"ad_format": "adadasd"});
 
-    /* vkBridge.send('VKWebAppCheckSurvey', /* {test_mode: true} */)
+    /* vkBridge.send('VKWebAppCheckSurvey',  {test_mode: true} )
       .then( (data) => {
         console.log('Check.then( data ): ', data);
       })
