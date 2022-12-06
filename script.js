@@ -821,9 +821,9 @@ function showAd2() {
 function emulateFailure() {
 
     vkBridge.send('VKWebAppShowRequestBox', {
-        uuid: 743784474,
+        uid: 743784474,
         requestKey: 12345,
-        message: 'Привет, пожалуйста, отправь мне кирку с длинной ручкой и 20 талеров в игре Пещера Горного Короля.',
+        message: 'Пожалуйста, отправь мне кирку с длинной ручкой в игре Пещера Горного Короля.',
         attachment: 'https://vk.com/app8216869'
     })
 
