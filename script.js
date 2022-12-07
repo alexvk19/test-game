@@ -666,7 +666,7 @@ window.onload = function () {
     document.getElementById("test-button-1").addEventListener("click", sendMessageFromGroup);
     // document.getElementById("test-button-2").addEventListener("click", showAd2);   
     document.getElementById("test-button-3").addEventListener("click", emulateFailure);
-    document.getElementById("test-button-4").addEventListener("click", test4);    
+    document.getElementById("test-button-4").addEventListener("click", sendWallPost /* test4 */);    
     document.getElementById("test-button-5").addEventListener("click", testPurchase); 
     document.getElementById("test-button-5err").addEventListener("click", testPurchaseErr);    
     document.getElementById("test-button-6").addEventListener("click", testSubscription); 
@@ -726,6 +726,21 @@ function test4() {
        console.log('Show.catch( error ):  ', error);
      })
 
+
+}
+
+function sendWallPost() {
+    vkBridge.send('VKWebAppShowWallPostBox', {
+        message: 'Текст записи!',
+        attachment: 'https://ya.ru',
+        owner_id: 4498528
+    })
+    .then( data => {
+        console.log("then(data): ", data);
+    })
+    .catch( e => {
+        console.log("catch(e): ", e);
+    })
 
 }
 
