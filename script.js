@@ -731,9 +731,9 @@ function test4() {
 
 function sendWallPost() {
     vkBridge.send('VKWebAppShowWallPostBox', {
-        message: 'Текст записи!',
-        attachment: 'https://ya.ru',
-        owner_id: 4498528
+        message: 'Это тестовая запись',
+        attachment: 'https://vk.com',
+        owner_id: 743784474 // 4498528
     })
     .then( data => {
         console.log("then(data): ", data);
