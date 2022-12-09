@@ -900,8 +900,9 @@ function testPurchaseErr() {
         user_result: value
       }  
 
+    console.log('Sending (obj): ', obj);
 
-    vkBridge.send('VKWebAppShowLeaderBoardBox')
+    vkBridge.send('VKWebAppShowLeaderBoardBox', obj)
     .then( (data) => {
         console.log('.then( data ): ', data);
     })
