@@ -889,9 +889,19 @@ function testPurchase() {
 
 function testPurchaseErr() {
 
-    vkBridge.send('VKWebAppShowLeaderBoardBox', {
-      user_result:15
-    })
+    var elem = document.getElementById('spanSubscriptionID');
+    var value = elem.value;
+
+    var obj;
+    if (value < 0)
+      obj = undefined;
+    else 
+      obj = {
+        user_result: value
+      }  
+
+
+    vkBridge.send('VKWebAppShowLeaderBoardBox')
     .then( (data) => {
         console.log('.then( data ): ', data);
     })
