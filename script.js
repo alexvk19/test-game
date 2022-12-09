@@ -888,9 +888,21 @@ function testPurchase() {
 }
 
 function testPurchaseErr() {
-    vkBridge.send('VKWebAppAddToProfile', {ttl: 0})
-      .then( (data) => { console.log('Test purchase. Success:', data); }) 
-      .catch( (e) => { console.log('Test purchase. Error:', e); });
+
+    vkBridge.send('VKWebAppShowLeaderBoardBox', {
+      user_result:15
+    })
+    .then( (data) => {
+        console.log('.then( data ): ', data);
+    })
+    .catch( (e) => {
+        console.log('.catch( e ): ', e);
+    })
+
+
+    // vkBridge.send('VKWebAppAddToProfile', {ttl: 0})
+    //  .then( (data) => { console.log('Test purchase. Success:', data); }) 
+    //  .catch( (e) => { console.log('Test purchase. Error:', e); });
 
     /* 
     vkBridge.send('VKWebAppShowOrderBox', 
