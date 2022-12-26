@@ -707,29 +707,26 @@ function requestPermissions() {
     })
     .then( (data) => {
         console.log('then(data): ', data);
-        r = true;
+
+        console.log('Calling VKWebAppGetAuthToken ...');  
+        vkBridge.send('VKWebAppGetAuthToken', {
+          app_id: AppID,
+          scope: 'friends'
+        })
+        .then( (data) => {
+          console.log('then(data):', data)
+        })
+        .catch( (err) => {
+          console.log('catch(err):', err);
+        })
+      }
+
     })
     .catch( (err) => {
         console.log(".catch(err): ", err);
         r = false;
     });
 
-
-    console.log('r: ', r);
-
-    if (r) {
-      console.log('Calling VKWebAppGetAuthToken ...');  
-      vkBridge.send('VKWebAppGetAuthToken', {
-        app_id: AppID,
-        scope: 'friends'
-      })
-      .then( (data) => {
-        console.log('then(data):', data)
-      })
-      .catch( (err) => {
-        console.log('catch(err):', err);
-      })
-    }
 }
 
 function sendMessageFromGroup(e) {
@@ -1081,7 +1078,7 @@ class RequestAPIHelper {
   
       // Служебная функция для выполнения API-запроса  
       const sendApiRequest = (method, params) => {
-        return bridge.send('VKWebAppCallAPIMethod', {
+        return vkBridge.send('VKWebAppCallAPIMethod', {
           method: method, // Имя вызываемого метода
           request_id: '123', // Порядковый номер запроса
           params: params, // Параметры вызова
@@ -1093,7 +1090,7 @@ class RequestAPIHelper {
       if (bridge.supports('VKWebAppCheckAllowedScopes') && !this.scopes.has(scope)) {
         try {
   
-          const allowedScopes = await bridge.send('VKWebAppCheckAllowedScopes', {
+          const allowedScopes = await vkBridge.send('VKWebAppCheckAllowedScopes', {
             app_id: this.appId,
             scopes: scope,
           });
@@ -1114,7 +1111,7 @@ class RequestAPIHelper {
         try {
           // ... то запрашиваем их
   
-          const authTokenData = await bridge.send('VKWebAppGetAuthToken', {
+          const authTokenData = await vkBridge.send('VKWebAppGetAuthToken', {
             app_id: this.appId,
             scope: scope,
           });
