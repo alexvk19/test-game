@@ -684,9 +684,10 @@ function requestPermissions() {
     const AppID = 8216869;
     var r = false;
 
+    console.log('Calling VKWebAppCheckAllowedScopes...');
     vkBridge.send('VKWebAppCheckAllowedScopes', {
         app_id: AppID,
-        scopes: "friends"
+        scopes: "friends,docs"
     })
     .then( (data) => {
         console.log('then(data): ', data);
@@ -698,6 +699,7 @@ function requestPermissions() {
     });
 
     if (r) {
+      console.log('Calling VKWebAppGetAuthToken ...');  
       vkBridge.send('VKWebAppGetAuthToken', {
         app_id: AppID,
         scope: 'friends'
