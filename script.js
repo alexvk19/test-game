@@ -719,7 +719,6 @@ function requestPermissions() {
         .catch( (err) => {
           console.log('catch(err):', err);
         })
-      }
 
     })
     .catch( (err) => {
