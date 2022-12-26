@@ -684,8 +684,6 @@ function requestPermissions() {
     const AppID = 8216869;
     var r = false;
 
-    vkBridge.
-
     vkBridge.send('VKWebAppCheckAllowedScopes', {
         app_id: AppID,
         scopes: "friends"
