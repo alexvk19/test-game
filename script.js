@@ -665,17 +665,52 @@ window.onload = function () {
     // document.getElementById("test-button-1").addEventListener("click", showAd1);
     document.getElementById("test-button-1").addEventListener("click", sendMessageFromGroup);
     // document.getElementById("test-button-2").addEventListener("click", showAd2);   
-    document.getElementById("test-button-3").addEventListener("click", emulateFailure);
-    document.getElementById("test-button-4").addEventListener("click", sendWallPost /* test4 */);    
+    //document.getElementById("test-button-3").addEventListener("click", emulateFailure);
+    //document.getElementById("test-button-4").addEventListener("click", sendWallPost /* test4 */);    
     document.getElementById("test-button-5").addEventListener("click", testPurchase); 
     document.getElementById("test-button-5err").addEventListener("click", testPurchaseErr);    
-    document.getElementById("test-button-6").addEventListener("click", testSubscription); 
-    document.getElementById("test-button-6err").addEventListener("click", testSubscriptionErr);   
-    document.getElementById("test-button-7").addEventListener("click", testSubscriptionCancel); 
-    document.getElementById("test-button-7err").addEventListener("click", testSubscriptionCancelErr);
-    document.getElementById("test-button-8").addEventListener("click", testSubscriptionResume); 
-    document.getElementById("test-button-8err").addEventListener("click", testSubscriptionResumeErr);   
+    //document.getElementById("test-button-6").addEventListener("click", testSubscription); 
+    //document.getElementById("test-button-6err").addEventListener("click", testSubscriptionErr);   
+    //document.getElementById("test-button-7").addEventListener("click", testSubscriptionCancel); 
+    //document.getElementById("test-button-7err").addEventListener("click", testSubscriptionCancelErr);
+    //document.getElementById("test-button-8").addEventListener("click", testSubscriptionResume); 
+    //document.getElementById("test-button-8err").addEventListener("click", testSubscriptionResumeErr); 
+    document.getElementById("test-button-9").addEventListener("click", requestPermissions);   
     document.getElementById("test-button-misc").addEventListener("click", testMisc);   
+}
+
+function requestPermissions() {
+
+    const AppID = 8216869;
+    var r = false;
+
+    vkBridge.
+
+    vkBridge.send('VKWebAppCheckAllowedScopes', {
+        app_id: AppID,
+        scopes: "friends"
+    })
+    .then( (data) => {
+        console.log('then(data): ', data);
+        r = true;
+    })
+    .catch( (err) => {
+        console.log(".catch(err): ", err);
+        r = false;
+    });
+
+    if (r) {
+      vkBridge.send('VKWebAppGetAuthToken', {
+        app_id: AppID,
+        scope: 'friends'
+      })
+      .then( (data) => {
+        console.log('then(data):', data)
+      })
+      .catch( (err) => {
+        console.log('catch(err):', err);
+      })
+    }
 }
 
 function sendMessageFromGroup(e) {
