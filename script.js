@@ -681,6 +681,22 @@ window.onload = function () {
 
 function requestPermissions() {
 
+    ACCESS_TOKEN = 'vk1.a.27t4n95QrCsV-fOTw43yEuioegDBgdRBC4oj7Cpfp7fFpp9vYqHeKdYf8RbsbIOq9sR0zYkxA-ueDd1MBoPSY3DxE3KhiCeQ6THRayf7SFyQdbpHA3kbgWP0ofQOZauRVxvx6ovwyBu8OCJfZiSu79Rkn2WK02u6YW_DXLp2kqyiHbAYvaXZnViKSfTkh21g';
+    const requestAPIHelper = new RequestAPIHelper(8216869, ACCESS_TOKEN, "photos");
+
+    requestAPIHelper.trySendRequest('friends.getAppUsers', 'friends', {v: '5.131'})
+      .then( (data) => { 
+        console.log('trySendRequest then(data):', data);
+        //Обработка данных пользователя, 
+        // полученных в ответе на запрос к API.
+      })
+      .catch( (err) => {
+        // Обработка ошибки, 
+        // полученной в ответе на API-запрос. 
+        console.log('trySendRequest catch(err):', err);
+    }) 
+
+
     const AppID = 8216869;
     var r = false;
 
@@ -697,6 +713,9 @@ function requestPermissions() {
         console.log(".catch(err): ", err);
         r = false;
     });
+
+
+    console.log('r: ', r);
 
     if (r) {
       console.log('Calling VKWebAppGetAuthToken ...');  
@@ -1048,3 +1067,73 @@ function testSubscriptionResumeErr(){
     .then( (data) => { console.log('Test subscription cancelling. Success:', data); } ) 
     .catch( (e) => { console.log('Test subscription cancelling. Error:', e); } )
 }
+
+class RequestAPIHelper {
+
+    constructor(appId, accessToken, allowedScopes) {
+      this.appId = appId; // ID игры
+      this.accessToken = accessToken; // access_token, полученный при старте
+      this.scopes = allowedScopes; // Map-объект с правами доступа, переданными при старте 
+    }
+  
+    // Вызов API-метода
+    async trySendRequest(method, scope, params) {
+  
+      // Служебная функция для выполнения API-запроса  
+      const sendApiRequest = (method, params) => {
+        return bridge.send('VKWebAppCallAPIMethod', {
+          method: method, // Имя вызываемого метода
+          request_id: '123', // Порядковый номер запроса
+          params: params, // Параметры вызова
+        })
+      };
+  
+      // Проверяем, поддерживает ли библиотека 
+      // событие VKWebAppCheckAllowedScopes 
+      if (bridge.supports('VKWebAppCheckAllowedScopes') && !this.scopes.has(scope)) {
+        try {
+  
+          const allowedScopes = await bridge.send('VKWebAppCheckAllowedScopes', {
+            app_id: this.appId,
+            scopes: scope,
+          });
+  
+          this.scopes.set(
+            scope,
+            allowedScopes.some( (item) => {
+              return item.scope === scope && item.allowed
+            })
+          );
+        } catch (e) {
+          console.error(e); // Событие не поддерживается
+        }
+      }
+  
+      // Если нужных прав нет ...
+      if (!this.scopes.get(scope)) {
+        try {
+          // ... то запрашиваем их
+  
+          const authTokenData = await bridge.send('VKWebAppGetAuthToken', {
+            app_id: this.appId,
+            scope: scope,
+          });
+  
+          this.accessToken = authTokenData.access_token; // Получаем access_token
+          this.scopes.set(scope, true); // Сохраняем права в список прав
+  
+        } catch (e) {
+          console.error(e); // Ошибка при запросе прав
+        }
+  
+        // Вызываем API-метод
+        params['access_token'] = this.accessToken;
+        return sendApiRequest(method, params);
+  
+      } else {
+        // Если нужные права есть,
+        // то вызываем API-метод
+        return sendApiRequest(method, params);
+      }
+    }
+  }
