@@ -32,6 +32,7 @@ const MSG_GAME_WON          = "Ура, победа!";
 const MSG_GAME_LOST         = "Ой, ошибка... Попробуйте еще раз";
 const MSG_GAME_CANCELLED    = "Игра остановлена по требованию";
 
+var CURRENT_USER_ID = -1;
 
 var game;
 
@@ -643,11 +644,14 @@ function getParameters() {
 
 
 window.onload = function () {
+    
+    getCurrentUserID();
+    
     var initData = getParameters();
     game = new Game(initData);
     game.start();
 
-
+    
 
     // Удалите комментарий со следующих строк ниже
     if (vkBridge)
@@ -665,8 +669,8 @@ window.onload = function () {
     // document.getElementById("test-button-1").addEventListener("click", showAd1);
     document.getElementById("test-button-1").addEventListener("click", sendMessageFromGroup);
     // document.getElementById("test-button-2").addEventListener("click", showAd2);   
-    //document.getElementById("test-button-3").addEventListener("click", emulateFailure);
-    //document.getElementById("test-button-4").addEventListener("click", sendWallPost /* test4 */);    
+    document.getElementById("test-button-3").addEventListener("click", emulateFailure);
+    document.getElementById("test-button-4").addEventListener("click", sendWallPost /* test4 */);    
     document.getElementById("test-button-5").addEventListener("click", testPurchase); 
     document.getElementById("test-button-5err").addEventListener("click", testPurchaseErr);    
     //document.getElementById("test-button-6").addEventListener("click", testSubscription); 
@@ -677,6 +681,12 @@ window.onload = function () {
     //document.getElementById("test-button-8err").addEventListener("click", testSubscriptionResumeErr); 
     document.getElementById("test-button-9").addEventListener("click", requestPermissions);   
     document.getElementById("test-button-misc").addEventListener("click", testMisc);   
+}
+
+function getCurrentUserID() {
+    const regex = /&viewer_id=([0-9]*)/;
+    let result = window.location.search.match(regex);
+    CURRENT_USER_ID = result.length > 1 ? result[1] : -1;
 }
 
 function requestPermissions() {
@@ -780,16 +790,17 @@ function test4() {
 }
 
 function sendWallPost() {
+    console.log('Posting on a wall... ')
     vkBridge.send('VKWebAppShowWallPostBox', {
         message: 'Это тестовая запись',
         attachment: 'https://vk.com',
-        owner_id: 743784474 // 4498528
+        owner_id: CURRENT_USER_ID  // 743784474 // 4498528
     })
     .then( data => {
-        console.log("then(data): ", data);
+        console.log('ShowWallPost  then(data): ', data);
     })
     .catch( e => {
-        console.log("catch(e): ", e);
+        console.log('ShowWallPost catch(e): ', e);
     })
 
 }
@@ -885,8 +896,9 @@ function showAd2() {
 
 function emulateFailure() {
 
+    console.log('Sending a request ...');
     vkBridge.send('VKWebAppShowRequestBox', {
-        uid: 743784474,
+        uid: 4498528,  // 743784474
         requestKey: 12345,
         message: 'Пожалуйста, отправь мне кирку с длинной ручкой в игре Пещера Горного Короля.',
         attachment: 'https://vk.com/app8216869'
@@ -917,7 +929,7 @@ xhttp.send(); */
 
 function testPurchase() {
 
-    vkBridge.send('VKWebAppShowInviteBox')
+    vkBridge.send('VKWebAppShowInviteBox', {requestKey: 'key-12345'})
       .then( (data) => {
         console.log('.then() result: ', data);
       })
