@@ -692,7 +692,7 @@ window.onload = function () {
 
 function visibilityChangeHandler() {
     // Проверяем, скрыта ли страница
-    if (document.visibilityState == 'hidden') { 
+    if (document.hidden) { 
       my_audio.pause(); // Останавливаем воспроизведение аудио 
     } else {
       my_audio.play(); // Запускаем воспроизведение
