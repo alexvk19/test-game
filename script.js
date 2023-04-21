@@ -644,7 +644,11 @@ function getParameters() {
 
 
 window.onload = function () {
+   
     
+    document.addEventListener('visibilitychange', visibilityChangeHandler);
+
+
     getCurrentUserID();
     
     var initData = getParameters();
@@ -666,9 +670,11 @@ window.onload = function () {
     if (h) 
       h.innerHTML = " — через туннель"; 
 
+
+
     // document.getElementById("test-button-1").addEventListener("click", showAd1);
     document.getElementById("test-button-1").addEventListener("click", sendMessageFromGroup);
-    // document.getElementById("test-button-2").addEventListener("click", showAd2);   
+    document.getElementById("test-button-2").addEventListener("click", addToFavorites /* showAd2 */ );   
     document.getElementById("test-button-3").addEventListener("click", emulateFailure);
     document.getElementById("test-button-4").addEventListener("click", sendWallPost /* test4 */);    
     document.getElementById("test-button-5").addEventListener("click", testPurchase); 
@@ -682,6 +688,16 @@ window.onload = function () {
     document.getElementById("test-button-9").addEventListener("click", requestPermissions);   
     document.getElementById("test-button-misc").addEventListener("click", testMisc);   
 }
+
+
+function visibilityChangeHandler() {
+    // Проверяем, скрыта ли страница
+    if (document.hidden) { 
+      my_audio.pause(); // Останавливаем воспроизведение аудио 
+    } else {
+      my_audio.play(); // Запускаем воспроизведение
+    }
+  }
 
 function getCurrentUserID() {
     const regex = /&viewer_id=([0-9]*)/;
@@ -773,11 +789,17 @@ function testMisc(e) {
     } );
 }
 
+function addToFavorites() {
+  vkBridge.send("VKWebAppAddToFavorites")
+    .then( (data) => { 
+      console.log("Then: Success", data);
+    })
+    .catch( (error) => { 
+      console.log("Catch: Error", error);
+    });    
+}
+
 function test4() {
-    /* vkBridge.send("VKWebAppAddToFavorites")
-     .then( (data) => { console.log("Then: Success", data) })
-     .catch( (error) => { console.log("Catch: Error", error) }); */
-    
      vkBridge.send('VKWebAppShowSurvey', /* {test_mode: true} */ )
      .then( (data) => {
        console.log('Show.then( data ): ', data);
@@ -792,8 +814,8 @@ function test4() {
 function sendWallPost() {
     console.log('Posting on a wall... ')
     vkBridge.send('VKWebAppShowWallPostBox', {
-        message: 'Это тестовая запись',
-        attachment: 'https://vk.com',
+        message: 'Это тестовая запись. А это [https://vk.com/app816869|ссылка в ней]',
+        attachment: 'https://vk.com/app8216869',
         owner_id: CURRENT_USER_ID  // 743784474 // 4498528
     })
     .then( data => {
@@ -928,6 +950,8 @@ xhttp.send(); */
 }
 
 function testPurchase() {
+
+   console.log('Send VKWebAppShowInviteBox w requestKey = key-12345');
 
     vkBridge.send('VKWebAppShowInviteBox', {requestKey: 'key-12345'})
       .then( (data) => {
