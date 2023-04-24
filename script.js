@@ -665,7 +665,6 @@ window.onload = function () {
 
     if (vkBridge) {
         vkBridge.subscribe(eventHandler);
-        alert('subscribed');
     }    
 
     let h = document.getElementById("additionalTitle");
@@ -873,11 +872,9 @@ function eventHandler(e) {
     const { type, data } = e.detail;
     switch(type) {
         case "VKWebAppViewHide":
-            alert('on hiding');
             my_audio.my_audio.pause(); // Останавливаем воспроизведение аудио 
             break;
         case "VKWebAppViewRestore": 
-            alert('on restoring');
             my_audio.play(); // Запускаем воспроизведение
             break;    
         case "VKWebAppCheckNativeAdsResult":
