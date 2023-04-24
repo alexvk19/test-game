@@ -872,7 +872,7 @@ function eventHandler(e) {
     const { type, data } = e.detail;
     switch(type) {
         case "VKWebAppViewHide":
-            my_audio.my_audio.pause(); // Останавливаем воспроизведение аудио 
+            my_audio.pause(); // Останавливаем воспроизведение аудио 
             break;
         case "VKWebAppViewRestore": 
             my_audio.play(); // Запускаем воспроизведение
