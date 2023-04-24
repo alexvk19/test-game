@@ -646,7 +646,7 @@ function getParameters() {
 window.onload = function () {
    
     
-    document.addEventListener('visibilitychange', visibilityChangeHandler);
+    // document.addEventListener('visibilitychange', visibilityChangeHandler);
 
 
     getCurrentUserID();
@@ -870,6 +870,12 @@ function eventHandler(e) {
     console.log(e.detail.type);
     const { type, data } = e.detail;
     switch(type) {
+        case "VKWebAppViewHide":
+            my_audio.my_audio.pause(); // Останавливаем воспроизведение аудио 
+            break;
+        case "VKWebAppViewRestore": 
+            my_audio.play(); // Запускаем воспроизведение
+            break;    
         case "VKWebAppCheckNativeAdsResult":
             console.log("Запрос прошел.");
             if (data.result)
