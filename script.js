@@ -687,7 +687,10 @@ window.onload = function () {
     //document.getElementById("test-button-8").addEventListener("click", testSubscriptionResume); 
     //document.getElementById("test-button-8err").addEventListener("click", testSubscriptionResumeErr); 
     document.getElementById("test-button-9").addEventListener("click", requestPermissions);   
-    document.getElementById("test-button-misc").addEventListener("click", testMisc);   
+    document.getElementById("test-button-misc").addEventListener("click", testMisc);  
+    document.getElementById("test-button-get-permissions").addEventListener("click", getPermissions);
+    document.getElementById("test-button-allow-notifications").addEventListener("click", testAllowNotifications);
+    document.getElementById("test-button-deny-notifications").addEventListener("click", testDenyNotifications);
 }
 
 
@@ -705,6 +708,37 @@ function getCurrentUserID() {
     let result = window.location.search.match(regex);
     CURRENT_USER_ID = result.length > 1 ? result[1] : -1;
 }
+
+function getPermissions() {
+  vkBridge.send("VKWebAppCheckAllowedScopes",  {scopes: 'notify,friends,wall,market' })
+    .then( (data) => {
+        console.log('VKWebAppCheckAllowedScopes response', data);
+    })
+    .catch ( (e) => {
+        console.log('VKWebAppCheckAllowedScopes ошибка', e);
+    })
+}
+
+function testAllowNotifications() {
+    vkBridge.send("VKWebAppAllowNotifications")
+      .then( (data) => {
+          console.log('VKWebAppAllowNotifications response', data);
+      })
+      .catch ( (e) => {
+          console.log('VKWebAppAllowNotifications ошибка', e);
+      })
+}
+
+function testDenyNotifications() {
+    vkBridge.send("VKWebAppDenyNotifications")
+      .then( (data) => {
+          console.log('VKWebAppDenyNotifications response', data);
+      })
+      .catch ( (e) => {
+          console.log('VKWebAppDenyNotifications ошибка', e);
+      })
+}
+
 
 function requestPermissions() {
 
