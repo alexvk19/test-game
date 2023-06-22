@@ -674,6 +674,7 @@ window.onload = function () {
 
 
     // document.getElementById("test-button-1").addEventListener("click", showAd1);
+    document.getElementById("test-check-hash-go").addEventListener("click", checkHashJump);
     document.getElementById("test-check-hash").addEventListener("click", checkHash);
     document.getElementById("test-button-1").addEventListener("click", sendMessageFromGroup);
     document.getElementById("test-button-2").addEventListener("click", addToFavorites /* showAd2 */ );   
@@ -695,10 +696,24 @@ window.onload = function () {
 }
 
 function checkHash() {
-    if (window)
+    let span = document.getElementById('test-info');
+    if (window) {
         console.log('Вызов window.location из iframe', window.location);
-    else
-       console.log('Вызов window.location из iframe. window == undefined');
+        if (window.location)
+            span.innerHTML = 'Hash: ' + window.location.hash;
+        else     
+            span.innerHTML = 'Hash: window.location is undefined';
+    }
+    else {
+        span.innerHTML = 'Hash: window == undefined';
+        console.log('Вызов window.location из iframe. window == undefined');
+    }
+}
+
+function checkHashJump() {
+    let span = document.getElementById('testHashEdit');
+    if (span.innerHTML != '')
+        window.location.hash = span.innerHTML; 
 }
 
 function visibilityChangeHandler() {
