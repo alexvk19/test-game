@@ -674,6 +674,7 @@ window.onload = function () {
 
 
     // document.getElementById("test-button-1").addEventListener("click", showAd1);
+    document.getElementById("test-check-hash").addEventListener("click", checkHash);
     document.getElementById("test-button-1").addEventListener("click", sendMessageFromGroup);
     document.getElementById("test-button-2").addEventListener("click", addToFavorites /* showAd2 */ );   
     document.getElementById("test-button-3").addEventListener("click", emulateFailure);
@@ -693,6 +694,9 @@ window.onload = function () {
     document.getElementById("test-button-deny-notifications").addEventListener("click", testDenyNotifications);
 }
 
+function checkHash() {
+    console.log('Вызов window.location из iframe'. window.location);
+}
 
 function visibilityChangeHandler() {
     // Проверяем, скрыта ли страница
