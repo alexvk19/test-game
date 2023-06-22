@@ -712,8 +712,10 @@ function checkHash() {
 
 function checkHashJump() {
     let span = document.getElementById('testHashEdit');
-    if (span.innerHTML != '')
-        window.location.hash = span.innerHTML; 
+    if (span.innerHTML != '') {
+        window.location.hash = span.innerHTML;
+        console.log("Установлен hash " + window.location.hash);
+    } 
 }
 
 function visibilityChangeHandler() {
