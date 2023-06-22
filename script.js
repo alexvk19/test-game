@@ -712,10 +712,12 @@ function checkHash() {
 
 function checkHashJump() {
     let span = document.getElementById('testHashEdit');
-    if (span.innerHTML != '') {
-        window.location.hash = '#' + span.innerHTML;
+    if (span.value != '') {
+        window.location.hash = '#' + span.value;
         console.log("Установлен hash " + window.location.hash);
-    } 
+    } else {
+        console.log('Cannot jump. span.value is empty');
+    }
 }
 
 function visibilityChangeHandler() {
