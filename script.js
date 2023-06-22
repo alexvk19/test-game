@@ -695,7 +695,10 @@ window.onload = function () {
 }
 
 function checkHash() {
-    console.log('Вызов window.location из iframe'. window.location);
+    if (window)
+        console.log('Вызов window.location из iframe', window.location);
+    else
+       console.log('Вызов window.location из iframe. window == undefined');
 }
 
 function visibilityChangeHandler() {
