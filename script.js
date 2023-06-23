@@ -701,12 +701,14 @@ function testCallMethod() {
     let result = document.getElementById('resultsOfCall');
     let methodName = edit.value.trim();
 
+    console.log('Calling ' + methodName);
+    result.innerHTML = 'Calling ' + methodName;
     vkBridge.send(methodName, {})
       .then( (data) => {
-        result.value = 'Success! Data: \n' + JSON.stringify(data);
+        result.innerHTML = 'Success! Data: \n' + JSON.stringify(data);
       })
-      .catch( (data) => {
-        result.value = 'Error! Data: \n' + JSON.stringify(data);
+      .catch( (err) => {
+        result.innerHTML = 'Error! Data: \n' + JSON.stringify(err);
       });
 }
 
