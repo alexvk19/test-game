@@ -674,25 +674,40 @@ window.onload = function () {
 
 
     // document.getElementById("test-button-1").addEventListener("click", showAd1);
-    document.getElementById("test-check-hash-go").addEventListener("click", checkHashJump);
-    document.getElementById("test-check-hash").addEventListener("click", checkHash);
-    document.getElementById("test-button-1").addEventListener("click", sendMessageFromGroup);
-    document.getElementById("test-button-2").addEventListener("click", addToFavorites /* showAd2 */ );   
-    document.getElementById("test-button-3").addEventListener("click", emulateFailure);
-    document.getElementById("test-button-4").addEventListener("click", sendWallPost /* test4 */);    
-    document.getElementById("test-button-5").addEventListener("click", testPurchase); 
-    document.getElementById("test-button-5err").addEventListener("click", testPurchaseErr);    
-    //document.getElementById("test-button-6").addEventListener("click", testSubscription); 
-    //document.getElementById("test-button-6err").addEventListener("click", testSubscriptionErr);   
-    //document.getElementById("test-button-7").addEventListener("click", testSubscriptionCancel); 
-    //document.getElementById("test-button-7err").addEventListener("click", testSubscriptionCancelErr);
-    //document.getElementById("test-button-8").addEventListener("click", testSubscriptionResume); 
-    //document.getElementById("test-button-8err").addEventListener("click", testSubscriptionResumeErr); 
-    document.getElementById("test-button-9").addEventListener("click", requestPermissions);   
-    document.getElementById("test-button-misc").addEventListener("click", testMisc);  
-    document.getElementById("test-button-get-permissions").addEventListener("click", getPermissions);
-    document.getElementById("test-button-allow-notifications").addEventListener("click", testAllowNotifications);
-    document.getElementById("test-button-deny-notifications").addEventListener("click", testDenyNotifications);
+    document.getElementById("test-call-method").addEventListener("click", testCallMethod);
+    // document.getElementById("test-check-hash-go").addEventListener("click", checkHashJump);
+    // document.getElementById("test-check-hash").addEventListener("click", checkHash);
+    // document.getElementById("test-button-1").addEventListener("click", sendMessageFromGroup);
+    // document.getElementById("test-button-2").addEventListener("click", addToFavorites /* showAd2 */ );   
+    // document.getElementById("test-button-3").addEventListener("click", emulateFailure);
+    // document.getElementById("test-button-4").addEventListener("click", sendWallPost /* test4 */);    
+    // document.getElementById("test-button-5").addEventListener("click", testPurchase); 
+    // document.getElementById("test-button-5err").addEventListener("click", testPurchaseErr);    
+    // //document.getElementById("test-button-6").addEventListener("click", testSubscription); 
+    // //document.getElementById("test-button-6err").addEventListener("click", testSubscriptionErr);   
+    // //document.getElementById("test-button-7").addEventListener("click", testSubscriptionCancel); 
+    // //document.getElementById("test-button-7err").addEventListener("click", testSubscriptionCancelErr);
+    // //document.getElementById("test-button-8").addEventListener("click", testSubscriptionResume); 
+    // //document.getElementById("test-button-8err").addEventListener("click", testSubscriptionResumeErr); 
+    // document.getElementById("test-button-9").addEventListener("click", requestPermissions);   
+    // document.getElementById("test-button-misc").addEventListener("click", testMisc);  
+    // document.getElementById("test-button-get-permissions").addEventListener("click", getPermissions);
+    // document.getElementById("test-button-allow-notifications").addEventListener("click", testAllowNotifications);
+    // document.getElementById("test-button-deny-notifications").addEventListener("click", testDenyNotifications);
+}
+
+function testCallMethod() {
+    let edit = document.getElementById('edit1');
+    let result = document.getElementById('resultsOfCall');
+    let methodName = edit.value.trim();
+
+    vkBridge.send(methodName, {})
+      .then( (data) => {
+        result.value = 'Success! Data: \n' + JSON.stringify(data);
+      })
+      .catch( (data) => {
+        result.value = 'Error! Data: \n' + JSON.stringify(data);
+      });
 }
 
 function checkHash() {
@@ -711,7 +726,7 @@ function checkHash() {
 }
 
 function checkHashJump() {
-    let span = document.getElementById('testHashEdit');
+    let span = document.getElementById('edit1');
     if (span.value != '') {
         window.location.hash = '#' + span.value;
         console.log("Установлен hash " + window.location.hash);
@@ -732,7 +747,11 @@ function visibilityChangeHandler() {
 function getCurrentUserID() {
     const regex = /&viewer_id=([0-9]*)/;
     let result = window.location.search.match(regex);
-    CURRENT_USER_ID = result.length > 1 ? result[1] : -1;
+    if (result) {
+        CURRENT_USER_ID = result.length > 1 ? result[1] : -1;
+    } else {
+        CURRENT_USER_ID = undefined;
+    }
 }
 
 function getPermissions() {
