@@ -701,9 +701,11 @@ function testGetMethods() {
 
     vkBridge.send("VKWebAppGetUserInfo", { user_id: "1"})
     .then( (data) => {
+      console.log(data);
       result.innerHTML = 'Success! Data: \n' + JSON.stringify(data);
     })
     .catch( (err) => {
+      console.log(err);  
       result.innerHTML = 'Error! Data: \n' + JSON.stringify(err);
     });
 
