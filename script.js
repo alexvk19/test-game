@@ -700,9 +700,7 @@ window.onload = function () {
 function testGetMethods() {
 
     vkBridge.send("VKWebAppGetPersonalCard", { type: [
-        'phone',
-        'email',
-        'address'
+        'phone'
       ]})
     .then( (data) => {
       result.innerHTML = 'Success! Data: \n' + JSON.stringify(data);
