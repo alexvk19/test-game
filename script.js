@@ -698,8 +698,9 @@ window.onload = function () {
 }
 
 function testGetMethods() {
-
-    vkBridge.send("VKWebAppGetUserInfo", { user_id: 1})
+    let result = document.getElementById('resultsOfCall');
+    let edit = document.getElementById('edit1');
+    vkBridge.send("VKWebAppGetUserInfo", { user_ids: edit.value})
     .then( (data) => {
       console.log(data);
       result.innerHTML = 'Success! Data: \n' + JSON.stringify(data);
