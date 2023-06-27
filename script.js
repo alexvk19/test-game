@@ -675,6 +675,7 @@ window.onload = function () {
 
     // document.getElementById("test-button-1").addEventListener("click", showAd1);
     document.getElementById("test-call-method").addEventListener("click", testCallMethod);
+    document.getElementById("btn1").addEventListener("click", testGetMethods);
     // document.getElementById("test-check-hash-go").addEventListener("click", checkHashJump);
     // document.getElementById("test-check-hash").addEventListener("click", checkHash);
     // document.getElementById("test-button-1").addEventListener("click", sendMessageFromGroup);
@@ -694,6 +695,22 @@ window.onload = function () {
     // document.getElementById("test-button-get-permissions").addEventListener("click", getPermissions);
     // document.getElementById("test-button-allow-notifications").addEventListener("click", testAllowNotifications);
     // document.getElementById("test-button-deny-notifications").addEventListener("click", testDenyNotifications);
+}
+
+function testGetMethods() {
+
+    vkBridge.send("VKWebAppgetPersonalCard", { type: [
+        'phone',
+        'email',
+        'address'
+      ]})
+    .then( (data) => {
+      result.innerHTML = 'Success! Data: \n' + JSON.stringify(data);
+    })
+    .catch( (err) => {
+      result.innerHTML = 'Error! Data: \n' + JSON.stringify(err);
+    });
+
 }
 
 function testCallMethod() {
