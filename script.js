@@ -699,7 +699,7 @@ window.onload = function () {
 
 function testGetMethods() {
 
-    vkBridge.send("VKWebAppgetPersonalCard", { type: [
+    vkBridge.send("VKWebAppGetPersonalCard", { type: [
         'phone',
         'email',
         'address'
