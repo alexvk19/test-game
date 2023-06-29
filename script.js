@@ -969,9 +969,15 @@ function eventHandler(e) {
     const { type, data } = e.detail;
     switch(type) {
         case "VKWebAppViewHide":
+            alert('in ViewHide')
             my_audio.pause(); // Останавливаем воспроизведение аудио 
             break;
         case "VKWebAppViewRestore": 
+            alert('in Restore')
+            my_audio.play(); // Запускаем воспроизведение
+            break;    
+        case "VKWebAppLocationChanged": 
+            alert('in LocationChanged')
             my_audio.play(); // Запускаем воспроизведение
             break;    
         case "VKWebAppCheckNativeAdsResult":
