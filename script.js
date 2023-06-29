@@ -966,21 +966,22 @@ var weHaveSomethingPreLoaded = false;
 
 function eventHandler(e) {
     console.log(e.detail.type);
+    let editbox = document.getElementById('resultsOfCall');
     const { type, data } = e.detail;
     switch(type) {
         case "VKWebAppViewHide":
-            alert('in ViewHide')
+            editbox.innerHTML += 'VKWebAppViewHide';
             my_audio.pause(); // Останавливаем воспроизведение аудио 
             break;
         case "VKWebAppViewRestore": 
-            alert('in Restore')
+            editbox.innerHTML += 'VKWebAppViewRestore';
             my_audio.play(); // Запускаем воспроизведение
             break;    
         case "VKWebAppLocationChanged": 
-            alert('in LocationChanged');
+            editbox.innerHTML += 'VKWebAppLocationChanged';
             break;    
         case "VKWebAppChangeFragment": 
-            alert('in ChangeFragment');
+            editbox.innerHTML += 'ChangeFragment';
             break;    
         case "VKWebAppCheckNativeAdsResult":
             console.log("Запрос прошел.");
