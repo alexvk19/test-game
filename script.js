@@ -970,18 +970,18 @@ function eventHandler(e) {
     const { type, data } = e.detail;
     switch(type) {
         case "VKWebAppViewHide":
-            editbox.innerHTML += 'VKWebAppViewHide';
+            editbox.innerHTML += 'VKWebAppViewHide\n';
             my_audio.pause(); // Останавливаем воспроизведение аудио 
             break;
         case "VKWebAppViewRestore": 
-            editbox.innerHTML += 'VKWebAppViewRestore';
+            editbox.innerHTML += 'VKWebAppViewRestore\n';
             my_audio.play(); // Запускаем воспроизведение
             break;    
         case "VKWebAppLocationChanged": 
-            editbox.innerHTML += 'VKWebAppLocationChanged';
+            editbox.innerHTML += 'VKWebAppLocationChanged\n';
             break;    
         case "VKWebAppChangeFragment": 
-            editbox.innerHTML += 'ChangeFragment';
+            editbox.innerHTML += 'VKWebAppChangeFragment\n';
             break;    
         case "VKWebAppCheckNativeAdsResult":
             console.log("Запрос прошел.");
@@ -998,6 +998,7 @@ function eventHandler(e) {
             console.log(e); 
             break;
         default:
+            editbox.innerHTML += type + '\n';
             console.log(e);
         }
 }
