@@ -977,8 +977,10 @@ function eventHandler(e) {
             my_audio.play(); // Запускаем воспроизведение
             break;    
         case "VKWebAppLocationChanged": 
-            alert('in LocationChanged')
-            my_audio.play(); // Запускаем воспроизведение
+            alert('in LocationChanged');
+            break;    
+        case "VKWebAppChangeFragment": 
+            alert('in ChangeFragment');
             break;    
         case "VKWebAppCheckNativeAdsResult":
             console.log("Запрос прошел.");
