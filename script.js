@@ -684,7 +684,7 @@ window.onload = function () {
     // document.getElementById("test-button-4").addEventListener("click", sendWallPost /* test4 */);    
     // document.getElementById("test-button-5").addEventListener("click", testPurchase); 
     // document.getElementById("test-button-5err").addEventListener("click", testPurchaseErr);    
-    // //document.getElementById("test-button-6").addEventListener("click", testSubscription); 
+    document.getElementById("test-button-buy").addEventListener("click", testPurchase /* testSubscription */); 
     // //document.getElementById("test-button-6err").addEventListener("click", testSubscriptionErr);   
     // //document.getElementById("test-button-7").addEventListener("click", testSubscriptionCancel); 
     // //document.getElementById("test-button-7err").addEventListener("click", testSubscriptionCancelErr);
@@ -1065,7 +1065,7 @@ xhttp.send(); */
 
 function testPurchase() {
 
-   console.log('Send VKWebAppShowInviteBox w requestKey = key-12345');
+   /* console.log('Send VKWebAppShowInviteBox w requestKey = key-12345');
 
     vkBridge.send('VKWebAppShowInviteBox', {requestKey: 'key-12345'})
       .then( (data) => {
@@ -1073,8 +1073,8 @@ function testPurchase() {
       })
       .catch( (e) => {
         console.log('.catch() result: ', e);
-      })
-    /*
+      }) */
+
     vkBridge.send('VKWebAppShowOrderBox', 
     { 
       type: 'item',
@@ -1084,7 +1084,7 @@ function testPurchase() {
         console.log('Test purchase. Success:', data); 
     } ) 
     .catch( (e) => { console.log('Test purchase. Error:', e); } )
-    */
+
 }
 
 function testPurchaseErr() {
