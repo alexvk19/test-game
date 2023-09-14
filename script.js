@@ -678,13 +678,15 @@ window.onload = function () {
     document.getElementById("btn1").addEventListener("click", testGetMethods);
     // document.getElementById("test-check-hash-go").addEventListener("click", checkHashJump);
     // document.getElementById("test-check-hash").addEventListener("click", checkHash);
-    // document.getElementById("test-button-1").addEventListener("click", sendMessageFromGroup);
-    // document.getElementById("test-button-2").addEventListener("click", addToFavorites /* showAd2 */ );   
+    document.getElementById("test-button-1").addEventListener("click", sendMessageFromGroup);
+    // document.getElementById("add-to-favorites").addEventListener("click", addToFavorites /* showAd2 */ );   
     // document.getElementById("test-button-3").addEventListener("click", emulateFailure);
     // document.getElementById("test-button-4").addEventListener("click", sendWallPost /* test4 */);    
-    // document.getElementById("test-button-5").addEventListener("click", testPurchase); 
-    // document.getElementById("test-button-5err").addEventListener("click", testPurchaseErr);    
-    document.getElementById("test-button-buy").addEventListener("click", testPurchase /* testSubscription */); 
+    // document.getElementById("invite-friends").addEventListener("click", testInviteFriends); 
+    document.getElementById("send-request").addEventListener("click", testSendRequest); 
+    document.getElementById("translate").addEventListener("click", testTranslate); 
+    document.getElementById("test-leaderboard").addEventListener("click", testLeaderboard);    
+    // document.getElementById("test-button-buy").addEventListener("click", testPurchase /* testSubscription */); 
     // //document.getElementById("test-button-6err").addEventListener("click", testSubscriptionErr);   
     // //document.getElementById("test-button-7").addEventListener("click", testSubscriptionCancel); 
     // //document.getElementById("test-button-7err").addEventListener("click", testSubscriptionCancelErr);
@@ -850,6 +852,34 @@ function requestPermissions() {
         r = false;
     });
 
+}
+
+function testTranslate() {
+    var textEdit = document.getElementById('text-to-translate');
+    if (! textEdit) {
+        alert('TextBox с текстом не найден.');
+        return;
+    };
+
+    var value = textEdit.value;
+    var idx = value.indexOf(':');
+    var lang = value.substr(0, idx).toLowerCase();
+    var text = value.substr(idx + 1);
+
+
+    console.log('Lang: ', lang);
+    console.log('Text: ', text);
+
+    vkBridge.send('VKWebAppTranslate', {
+        texts: text, 
+        translation_language: lang
+    })
+    .then( (data) => {
+        console.log('then(data):', data)
+      })
+    .catch( (err) => {
+        console.log('catch(err):', err);
+    });
 }
 
 function sendMessageFromGroup(e) {
@@ -1030,15 +1060,18 @@ function showAd2() {
       .catch( (e) => { alert('Ошибка проверки! ' + e); });  
 }
 
-function emulateFailure() {
 
+function testSendRequest() {
     console.log('Sending a request ...');
     vkBridge.send('VKWebAppShowRequestBox', {
-        uid: 4498528,  // 743784474
+        uid: 4498528, // 743784486, //4498528,  // 743784474
         requestKey: 12345,
-        message: 'Пожалуйста, отправь мне кирку с длинной ручкой в игре Пещера Горного Короля.',
+        message: 'Could you send me a long-handled pickaxe?',  // 'Пожалуйста, отправь мне кирку с длинной ручкой в игре Пещера Горного Короля.',
         attachment: 'https://vk.com/app8216869'
     })
+}
+
+function emulateFailure() {
 
     // vkBridge.send("VKWebAppCheckNativeAds", {"ad_format": "adadasd"});
 
@@ -1063,17 +1096,17 @@ function emulateFailure() {
 xhttp.send(); */
 }
 
-function testPurchase() {
-
-   /* console.log('Send VKWebAppShowInviteBox w requestKey = key-12345');
-
+function testInviteFriends() {
     vkBridge.send('VKWebAppShowInviteBox', {requestKey: 'key-12345'})
       .then( (data) => {
         console.log('.then() result: ', data);
       })
       .catch( (e) => {
         console.log('.catch() result: ', e);
-      }) */
+      }) 
+}
+
+function testPurchase() {
 
     vkBridge.send('VKWebAppShowOrderBox', 
     { 
@@ -1085,6 +1118,16 @@ function testPurchase() {
     } ) 
     .catch( (e) => { console.log('Test purchase. Error:', e); } )
 
+}
+
+function testLeaderboard() {
+    vkBridge.send('VKWebAppShowLeaderBoardBox', {user_result: 11} )
+    .then( (data) => {
+        console.log('.then( data ): ', data);
+    })
+    .catch( (e) => {
+        console.log('.catch( e ): ', e);
+    });
 }
 
 function testPurchaseErr() {
@@ -1101,14 +1144,6 @@ function testPurchaseErr() {
       }  
 
     console.log('Sending (obj): ', obj);
-
-    vkBridge.send('VKWebAppShowLeaderBoardBox', obj)
-    .then( (data) => {
-        console.log('.then( data ): ', data);
-    })
-    .catch( (e) => {
-        console.log('.catch( e ): ', e);
-    })
 
 
     // vkBridge.send('VKWebAppAddToProfile', {ttl: 0})
