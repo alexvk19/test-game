@@ -733,6 +733,7 @@ function testCallMethod() {
 }
 
 function testCheckAdMethod() {
+    console.log('Calling VKWebAppCheckNativeAds');
     vkBridge.send("VKWebAppCheckNativeAds", {ad_format:"reward"})
     .then(data => 
             { 
@@ -751,6 +752,7 @@ function testCheckAdMethod() {
 }
 
 function testShowAdMethod() {
+    console.log('Calling VKWebAppShowNativeAds');
     vkBridge.send("VKWebAppShowNativeAds", {ad_format:"reward"})
         .then(data => { 
             console.log("ShowNativeAds result: promise->then --");
