@@ -676,6 +676,8 @@ window.onload = function () {
     // document.getElementById("test-button-1").addEventListener("click", showAd1);
     document.getElementById("test-call-method").addEventListener("click", testCallMethod);
     document.getElementById("btn1").addEventListener("click", testGetMethods);
+    document.getElementById("test-check-ad-method").addEventListener("click", testCheckAdMethod);
+    document.getElementById("test-show-ad-method").addEventListener("click", testShowAdMethod);
     // document.getElementById("test-check-hash-go").addEventListener("click", checkHashJump);
     // document.getElementById("test-check-hash").addEventListener("click", checkHash);
     document.getElementById("test-button-1").addEventListener("click", sendMessageFromGroup);
@@ -729,6 +731,37 @@ function testCallMethod() {
         result.innerHTML = 'Error! Data: \n' + JSON.stringify(err);
       });
 }
+
+function testCheckAdMethod() {
+    vkBridge.send("VKWebAppCheckNativeAds", {ad_format:"reward"})
+    .then(data => 
+            { 
+              console.log("CheckNativeAds result: promise->then --");
+              if (data.result) {
+                console.log("Рекламные материалы были получены.", data); 
+            } else {
+                console.log("No ad materials have been loaded.", data);
+              }     
+            })
+    .catch(error => 
+            { console.log("CheckNativeAds result: promise->catch --", error); }
+        );
+
+
+}
+
+function testShowAdMethod() {
+    vkBridge.send("VKWebAppShowNativeAds", {ad_format:"reward"})
+        .then(data => { 
+            console.log("ShowNativeAds result: promise->then --");
+            if (data.result)
+                console.log("Реклама была показана.", data);
+            else
+                console.log("Ошибка при показе.", data);
+        })
+        .catch(error => {console.log('ShowNativeAds result: promise->catch -- ', error); }); 
+}
+
 
 function checkHash() {
     let span = document.getElementById('test-info');
@@ -966,7 +999,7 @@ function showAd1() {
                     let btn = document.createElement("input");
                     btn.type = "button";
                     btn.value = "Посмотреть";
-                    btn.addEventListener("click", fooButtonClick);
+                    btn.addEventListener("click", testShowAdMethod);
                     document.getElementById("my-form").appendChild(label);
                     document.getElementById("my-form").appendChild(btn);
                   } else {
@@ -977,19 +1010,6 @@ function showAd1() {
                 { console.log("promise->error"); console.log(error); }
             );
 
-}
-
-function fooButtonClick() {
-    vkBridge.send("VKWebAppShowNativeAds", {ad_format:"reward"})
-        .then(data => { 
-            console.log("Show: promise->then");
-            console.log(data);
-            if (data.result)
-                console.log("Реклама была показана");
-            else
-                console.log("Ошибка");
-        })
-        .catch(error => {console.log(error); });
 }
 
 var weHaveSomethingPreLoaded = false;
