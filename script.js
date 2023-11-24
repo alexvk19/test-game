@@ -675,6 +675,7 @@ window.onload = function () {
 
     // document.getElementById("test-button-1").addEventListener("click", showAd1);
     document.getElementById("test-call-method").addEventListener("click", testCallMethod);
+    document.getElementById("test-add-to-profile").addEventListener("click", testAddToProfile);
     document.getElementById("btn1").addEventListener("click", testGetMethods);
     document.getElementById("test-check-ad-method").addEventListener("click", testCheckAdMethod);
     document.getElementById("test-show-ad-method").addEventListener("click", testShowAdMethod);
@@ -714,6 +715,22 @@ function testGetMethods() {
       result.innerHTML = 'Error! Data: \n' + JSON.stringify(err);
     });
 
+}
+
+function testAddToProfile() {
+    let result = document.getElementById('resultsOfCall');
+
+    let newTTL = new Date().now();
+
+    newTTL += 15000;
+
+    vkBridge.send('VKWebAppAddToProfile', { ttl: newTTL})
+    .then( (data) => {
+      result.innerHTML = 'Success! Data: \n' + JSON.stringify(data);
+    })
+    .catch( (err) => {
+      result.innerHTML = 'Error! Data: \n' + JSON.stringify(err);
+    });
 }
 
 function testCallMethod() {
