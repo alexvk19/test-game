@@ -726,11 +726,10 @@ function testGetMethods() {
       console.log(err);  
       result.innerHTML = 'Error! Data: \n' + JSON.stringify(err);
     });
-
 }
 
 function tesCreateStory() {
-    bridge.send("VKWebAppShowStoryBox", { {
+    bridge.send("VKWebAppShowStoryBox", {
         background_type: 'image',
         url: '',
         attachment: {
