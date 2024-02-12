@@ -674,6 +674,7 @@ window.onload = function () {
 
 
     // document.getElementById("test-button-1").addEventListener("click", showAd1);
+    document.getElementById("test-scrolltop").addEventListener("click", testScrollTop);
     document.getElementById("test-call-method").addEventListener("click", testCallMethod);
     document.getElementById("test-add-to-profile").addEventListener("click", testAddToProfile);
     document.getElementById("btn1").addEventListener("click", testGetMethods);
@@ -688,7 +689,8 @@ window.onload = function () {
     // document.getElementById("invite-friends").addEventListener("click", testInviteFriends); 
     document.getElementById("send-request").addEventListener("click", testSendRequest); 
     document.getElementById("translate").addEventListener("click", testTranslate); 
-    document.getElementById("test-leaderboard").addEventListener("click", testLeaderboard);    
+    document.getElementById("test-leaderboard").addEventListener("click", testLeaderboard);  
+    document.getElementById("test-create-story").addEventListener("click", testCreateStory);  
     // document.getElementById("test-button-buy").addEventListener("click", testPurchase /* testSubscription */); 
     // //document.getElementById("test-button-6err").addEventListener("click", testSubscriptionErr);   
     // //document.getElementById("test-button-7").addEventListener("click", testSubscriptionCancel); 
@@ -700,6 +702,16 @@ window.onload = function () {
     // document.getElementById("test-button-get-permissions").addEventListener("click", getPermissions);
     // document.getElementById("test-button-allow-notifications").addEventListener("click", testAllowNotifications);
     // document.getElementById("test-button-deny-notifications").addEventListener("click", testDenyNotifications);
+}
+
+function testScrollTop() {
+    vkBridge.send('VKWebAppScrollTop')
+    .then( (data) => {
+        console.log('Результат выполнения VKWebAppScrollTop: ', data);
+    })
+    .catch( (error) => {
+        console.log('Ошибка при выполнении VKWebAppScrollTop: ', error);
+    })
 }
 
 function testGetMethods() {
@@ -715,6 +727,24 @@ function testGetMethods() {
       result.innerHTML = 'Error! Data: \n' + JSON.stringify(err);
     });
 
+}
+
+function tesCreateStory() {
+    bridge.send("VKWebAppShowStoryBox", { {
+        background_type: 'image',
+        url: '',
+        attachment: {
+            text: 'Посмотри игру!',
+            type: 'url',           
+        }
+    })
+    .then( (data) => {
+        console.log('Success!', data);
+      })
+      .catch( (err) => {
+        console.log('Error!', err);
+      });
+  
 }
 
 function testAddToProfile() {
