@@ -1,6 +1,6 @@
 
 
-var fileInput, textArea, toc, bodyPanel, tocPanel, editPanel, headerArea;
+var fileInput, textArea, toc, bodyPanel, tocPanel, editPanel, headerArea, saveBtn;
 
 window.onload = function () { 
     headerArea = document.getElementById('headerArea');
@@ -20,8 +20,8 @@ window.onload = function () {
     let updateBtn = document.getElementById('update-tree-btn');
     updateBtn.addEventListener('click', updateTreeFromTextArea);
 
-    let saveBtn = document.getElementById('save-file-btn');
-    saveBtn.addEventListener('click', saveBtn);
+    saveBtn = document.getElementById('save-file-btn');
+    saveBtn.addEventListener('click', saveFile);
 
     toc = new Tabulator("#toc", {
         data: [],
@@ -112,11 +112,14 @@ function updateTreeFromTextArea() {
     toc.setData(obj);
 }
 
-function saveFile() {
+function saveFile(event) {
     let s = textArea.value;
-    download('new-toc.txt', s);
+    saveBtn.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(s));
+    // saveBtn.dispatchEvent(event);
+    // download('new-toc.txt', s);
 }
 
+/*
 function download(filename, text) {
     let pom = document.createElement('a');
     pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
@@ -129,4 +132,4 @@ function download(filename, text) {
     else {
         pom.click();
     }
-}
+} */
