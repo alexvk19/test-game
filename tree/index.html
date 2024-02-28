@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=cp1251" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+        <link href="./tabulator.min.css" rel="stylesheet">
+        <link href="./styles.css" rel="stylesheet">
+        <title>Новая структура портала</title>
+    </head>
+    <body>
+        <!-- Область заголовка -->
+        <div id="headerArea" class="headerArea">
+            <h1>Портал для разработчиков</h1>
+            <p><a id="update-tree-btn">&#x21dc;&nbsp;Обновить TOC</a></p>
+        </div>    
+        <div id="body-panel">
+            <div id="toc-panel">
+                <div id="toc"></div>
+            </div>
+            <div id="edit-panel">
+                <div class="toolbar"><span><input id="readFileField"  type="file" /></span><span><a id="save-file-btn">Сохранить в файл &nbsp;&#x2913;</a></span></div>
+                <textarea id="treeSource"></textarea>
+            </div>
+        </div>
+    </body>
+
+    <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+    <script src="./tabulator.min.js"></script>
+    <script src="./script.js"></script>
+</html>
+
+
+
+
