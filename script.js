@@ -675,6 +675,7 @@ window.onload = function () {
 
     // document.getElementById("test-button-1").addEventListener("click", showAd1);
     document.getElementById("test-scrolltop").addEventListener("click", testScrollTop);
+    document.getElementById("test-open-app").addEventListener("click", testOpenApp);
     document.getElementById("test-call-method").addEventListener("click", testCallMethod);
     document.getElementById("test-add-to-profile").addEventListener("click", testAddToProfile);
     document.getElementById("btn1").addEventListener("click", testGetMethods);
@@ -711,6 +712,16 @@ function testScrollTop() {
     })
     .catch( (error) => {
         console.log('Ошибка при выполнении VKWebAppScrollTop: ', error);
+    })
+}
+
+function testOpenApp() {
+    vkBridge.send('VKWebViewOpenApp', {app_id: 51427860, group_id: 215806856})
+    .then( (data) => {
+        console.log('Результат выполнения VKWebAppOpenApp: ', data);
+    })
+    .catch( (error) => {
+        console.log('Ошибка при выполнении VKWebAppOpenApp: ', error);
     })
 }
 
