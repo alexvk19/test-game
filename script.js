@@ -716,7 +716,7 @@ function testScrollTop() {
 }
 
 function testOpenApp() {
-    vkBridge.send('VKWebViewOpenApp', {app_id: 51427860, group_id: 215806856})
+    vkBridge.send('VKWebAppOpenApp', {app_id: 51427860, group_id: 215806856})
     .then( (data) => {
         console.log('Результат выполнения VKWebAppOpenApp: ', data);
     })
