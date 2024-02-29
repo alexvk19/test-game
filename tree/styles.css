@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 :root {
     --font-size: 15px;
     --vk-color: #0077FFe0;
@@ -39,7 +43,6 @@ h1 {
 }
 
 #body-panel {
-    height: 800px;
     width: 100%;
 }
 
@@ -48,35 +51,62 @@ h1 {
     float: left;
     margin: 0 0 0 0rem;
     padding: 0 0 0 0rem;
-    border: var(--panel-border);
+    border: none;
     height: 100%;
-    width: calc(50% - 4px);
+    width: calc(40% - 4px);
+    overflow: auto;
 }
 
 #toc {
-    width: 100%;
-    height: 100%;
+    cursor: pointer;
 }
 
-#edit-panel {
+#edit-panel {  /* vscode-tabs */
     float: left;
     margin: 0;
-    padding: 0;
-    width: 50%;
+    padding: 0px;
+    width: 60%;
     height: 100%;
+    border-left: var(--panel-border);
+}
+
+vscode-tab-header {
+    border-top: var(--panel-border);
+    border-right: var(--panel-border);
+}
+
+vscode-tab-header[active] {
+    color: #0077e0;
+    border-bottom: none;
+}
+
+vscode-tab-header > vscode-icon {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+vscode-tab-header > span {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 0.25rem;
+}
+
+vscode-tab-panel {
+    width: 100%;
+    overflow: hidden;
 }
 
 .toolbar {
     height: 29px;
     width: 100%;
-    background-color: #eee;
+    background-color: #f4f4f4;
     color: #fff;
     padding-left: 0.5rem;
 }
 
 .toolbar span {
     display: inline-block;
-    margin-top: 2px;
+    margin-top: 3px;
     color: var(--vk-color); 
 }
 
@@ -85,52 +115,21 @@ h1 {
 }
 
 
-#treeSource {
+#textArea {
     width: 100%;
-    height: calc(100% - 29px);
-    padding: 0.5rem;
+    resize: none;
+    padding: 0.5rem 0 0.5rem 0.5rem;
     border: var(--panel-border);
+    overflow: auto;
 }
 
 #update-tree-btn, #save-file-btn {
     cursor: pointer;
 }
 
-.tabulator {
-    background-color: var(--background-color);
-}
-
-.tabulator-row.tabulator-row-even {
-    background-color: var(--background-color);
-}
-
-.tabulator-data-tree-branch {
-    visibility: hidden;
-}
-
-.tabulator-tree-level-0 {
-    margin-top: 0.4rem;
-}
-/* div.tabulator-cell:has( > div.tabulator-data-tree-control) {
-    color: red;
-} */
-
-.contentWindow{
-    position: absolute;
-    background-color: var(--background-color);
-}
-  
-.resizer{
-    position: absolute;
-    width: 10px;
-    z-index: 100;
-    background-color: #cdcdcd;
-}
-  
-.verticalResizer{
-    cursor: ns-resize;
-}
-  
-.horizontalResizer{
-    cursor: ew-resize;
+#contents {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    padding: 0.5rem;
 }

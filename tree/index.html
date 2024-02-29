@@ -4,8 +4,11 @@
         <meta charset="UTF-8">
         <meta http-equiv="Content-Type" content="text/html; charset=cp1251" />
         <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-        <link href="./tabulator.min.css" rel="stylesheet">
+        <link rel="icon" href="./favicon.ico">
+        <!-- link href="./tabulator.min.css" rel="stylesheet" -->
+        <link href="./codicon.css" rel="stylesheet" id="vscode-codicon-stylesheet">
         <link href="./styles.css" rel="stylesheet">
+        <link rel="import" href="./toc.txt">
         <title>Новая структура портала</title>
     </head>
     <body>
@@ -19,10 +22,20 @@
                 <!-- div id="toc"></div -->
                 <vscode-tree id="toc"></vscode-tree>
             </div>
-            <div id="edit-panel">
-                <div class="toolbar"><span><input id="readFileField"  type="file" /></span><span><a id="save-file-btn" download="updated-toc.txt">Сохранить в файл &nbsp;&#x2913;</a></span></div>
-                <textarea id="treeSource"></textarea>
-            </div>
+            <vscode-tabs id="edit-panel">
+                <vscode-tab-header slot="header"><vscode-icon name="file-code"></vscode-icon><span>Редактирование</span></vscode-tab-header>
+                <vscode-tab-panel>
+                    <div class="toolbar" id="textAreaToolbar"><span><input id="readFileField"  type="file" /></span><span><a id="save-file-btn" download="updated-toc.txt">Сохранить в файл &nbsp;&#x2913;</a></span></div>
+                    <textarea id="textArea">
+                    </textarea>
+                </vscode-tab-panel>
+                <vscode-tab-header slot="header"><vscode-icon name="note"></vscode-icon><span>Примечание</span></vscode-tab-header>
+                <vscode-tab-panel>
+                    <div id="contents">
+                    </div>
+                </vscode-tab-panel>
+
+            </vscode-tabs>
         </div>
     </body>
 
