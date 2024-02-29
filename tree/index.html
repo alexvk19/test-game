@@ -15,7 +15,6 @@
         <!-- Область заголовка -->
         <div id="headerArea" class="headerArea">
             <h1>Портал для разработчиков</h1>
-            <p><a id="update-tree-btn">&#x21dc;&nbsp;Обновить TOC</a></p>
         </div>    
         <div id="body-panel">
             <div id="toc-panel">
@@ -25,7 +24,10 @@
             <vscode-tabs id="edit-panel">
                 <vscode-tab-header slot="header"><vscode-icon name="file-code"></vscode-icon><span>Редактирование</span></vscode-tab-header>
                 <vscode-tab-panel>
-                    <div class="toolbar" id="textAreaToolbar"><span><input id="readFileField"  type="file" /></span><span><a id="save-file-btn" download="updated-toc.txt">Сохранить в файл &nbsp;&#x2913;</a></span></div>
+                    <div class="toolbar" id="textAreaToolbar">
+                        <span><a id="update-tree-btn" title="Обновить дерево содержания после изменений"><vscode-icon name="arrow-circle-left"></vscode-icon>Обновить TOC</span></a></span >
+                        <span>Загрузить: <input id="readFileField"  type="file" /></span>
+                        <span><a id="save-file-btn" download="updated-toc.txt">Сохранить в файл <vscode-icon name="desktop-download"></vscode-icon></a></span></div>
                     <textarea id="textArea">
                     </textarea>
                 </vscode-tab-panel>

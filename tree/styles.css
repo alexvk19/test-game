@@ -30,7 +30,7 @@ p {
 }
 
 .headerArea {
-    padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+    padding: 1.5rem 1.5rem 1.5rem 1.5rem;
     color : var(--vk-title-color);
     background-color: var(--vk-color); 
 }
@@ -106,11 +106,23 @@ vscode-tab-panel {
 
 .toolbar span {
     display: inline-block;
+    vertical-align: middle;
     margin-top: 3px;
     color: var(--vk-color); 
 }
 
-.toolbar > span:nth-child(2) {
+.toolbar vscode-icon { 
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: -2px;
+    margin-left: 0.2rem;  
+    margin-right: 0.2rem;  
+}
+
+
+
+.toolbar > span:nth-child(2), 
+.toolbar > span:nth-child(3) {
     margin-left: 4rem; 
 }
 
