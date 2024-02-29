@@ -7,6 +7,7 @@ window.onload = function () {
     bodyPanel = document.getElementById('body-panel');
     tocPanel = document.getElementById('toc-panel');
     editPanel = document.getElementById('edit-panel');
+    toc = document.getElementById('toc');
 
     if (vkBridge)
         vkBridge.send("VKWebAppInit", {})
@@ -23,18 +24,25 @@ window.onload = function () {
     saveBtn = document.getElementById('save-file-btn');
     saveBtn.addEventListener('click', saveFile);
 
-    toc = new Tabulator("#toc", {
+    /* toc = new Tabulator("#toc", {
         data: [],
         dataTree: true,
         columns: [
             {title: 'File', field: 'name', sorter:"string", width:350, editor:false}
         ]
-    });
+    }); */
+}
+
+const icons = {
+    branch: 'folder',
+    leaf: 'file',
+    open: 'folder-opened',
 }
 
 function parseTreeData(sourceText) {
     let result = [];
-    let sourceStrings = sourceText.split('\n');
+    let preparedText = sourceText.replace(/\t/gm, '    ');
+    let sourceStrings = preparedText.split('\n');
     let currentIndex = 0;
 
     let startIndent = detectIndent(0);
@@ -54,16 +62,20 @@ function parseTreeData(sourceText) {
         if (s == '') 
             return r;
 
-        r = { name: s };
+        // r = { name: s };
+        r = { ICONS: icons, label: s};
 
         let nextIndent = detectIndent(currentIndex + 1);
         if (nextIndent && nextIndent > currentIndent) {
-            r._children = [];
+            // r._children = [];
+            r.subItems = [];
             while ( nextIndent && nextIndent > currentIndent) {
                 currentIndex++;
                 let r2 = handleLine(nextIndent);
-                if (r2)
-                    r._children.push(r2);
+                if (r2) {
+                    // r._children.push(r2);
+                    r.subItems.push(r2);
+                }
                 nextIndent = detectIndent(currentIndex + 1);
             }
         }
@@ -94,7 +106,8 @@ function readFile(source) {
         textArea.value = event.target.result;
         let r = parseTreeData(textArea.value);
         console.log('data', r);
-        toc.setData(r);
+        // toc.setData(r);
+        toc.data = r;
     });
     reader.readAsText(source);
 }
@@ -109,7 +122,8 @@ function handleFileInputChange(event) {
 function updateTreeFromTextArea() {
     let s = textArea.value;
     let obj = parseTreeData(s);
-    toc.setData(obj);
+    // toc.setData(obj);
+    toc.data = obj;
 }
 
 function saveFile(event) {

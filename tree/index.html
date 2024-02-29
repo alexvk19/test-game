@@ -16,7 +16,8 @@
         </div>    
         <div id="body-panel">
             <div id="toc-panel">
-                <div id="toc"></div>
+                <!-- div id="toc"></div -->
+                <vscode-tree id="toc"></vscode-tree>
             </div>
             <div id="edit-panel">
                 <div class="toolbar"><span><input id="readFileField"  type="file" /></span><span><a id="save-file-btn" download="updated-toc.txt">Сохранить в файл &nbsp;&#x2913;</a></span></div>
@@ -26,7 +27,8 @@
     </body>
 
     <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
-    <script src="./tabulator.min.js"></script>
+    <script src="./bundled.js" type="module"></script>
+    <!-- script src="./tabulator.min.js"></script -->
     <script src="./script.js"></script>
 </html>
 
