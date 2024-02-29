@@ -14,11 +14,11 @@ window.onload = function () {
     editPanel = document.getElementById('edit-panel');
     toc = document.getElementById('toc');
     tabHeader = document.getElementById('t1-h0');
+    textArea = document.getElementById('textArea');
     textAreaToolbar = document.getElementById('textAreaToolbar');
     contentsBox = document.getElementById('contents'); 
 
     fileInput = document.getElementById('readFileField');
-    textArea = document.getElementById('textArea');
     readFileField.addEventListener('change', handleFileInputChange);
 
     let updateBtn = document.getElementById('update-tree-btn');
