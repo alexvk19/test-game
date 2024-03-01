@@ -22,6 +22,13 @@
                 <vscode-tree id="toc"></vscode-tree>
             </div>
             <vscode-tabs id="edit-panel">
+                <vscode-tab-header slot="header"><vscode-icon name="note"></vscode-icon><span>Примечание</span></vscode-tab-header>
+                <vscode-tab-panel>
+                    <div id="contentsWrapper">
+                        <div id="contents">
+                        </div>
+                    </div>    
+                </vscode-tab-panel>
                 <vscode-tab-header slot="header"><vscode-icon name="file-code"></vscode-icon><span>Редактирование</span></vscode-tab-header>
                 <vscode-tab-panel>
                     <div class="toolbar" id="textAreaToolbar">
@@ -31,12 +38,6 @@
                     <textarea id="textArea">
                     </textarea>
                 </vscode-tab-panel>
-                <vscode-tab-header slot="header"><vscode-icon name="note"></vscode-icon><span>Примечание</span></vscode-tab-header>
-                <vscode-tab-panel>
-                    <div id="contents">
-                    </div>
-                </vscode-tab-panel>
-
             </vscode-tabs>
         </div>
     </body>

@@ -13,10 +13,11 @@ window.onload = function () {
     tocPanel = document.getElementById('toc-panel');
     editPanel = document.getElementById('edit-panel');
     toc = document.getElementById('toc');
-    tabHeader = document.getElementById('t1-h0');
+    tabHeader = document.getElementById('t1-h1');
     textArea = document.getElementById('textArea');
     textAreaToolbar = document.getElementById('textAreaToolbar');
-    contentsBox = document.getElementById('contents'); 
+    contentsBox = document.getElementById('contents');
+    contentsWrapper = document.getElementById('contentsWrapper'); 
 
     fileInput = document.getElementById('readFileField');
     readFileField.addEventListener('change', handleFileInputChange);
@@ -28,7 +29,11 @@ window.onload = function () {
     saveBtn.addEventListener('click', saveFile);
 
     const sheet = new CSSStyleSheet();
-    sheet.replaceSync("ul {padding-inline-start: 0px; list-style-type: none; } \n li.open.branch > ul { padding-inline-start: 1rem; } ");
+    const styles = "ul {padding-inline-start: 0px; list-style-type: none; } \n " +
+                   "li.open.branch > ul { padding-inline-start: 1rem; } \n" +
+                   "div.contents.selected.focused { background-color: #0077e020;} \n" + 
+                   "div.contents:hover { background-color: #f4f4f4;}";
+    sheet.replaceSync(styles);
     toc.shadowRoot.adoptedStyleSheets = [sheet];
 
     initializeTree();
@@ -41,13 +46,15 @@ window.onload = function () {
 function updateHeights() {
     let h = document.documentElement.clientHeight - headerArea.offsetHeight;
     bodyPanel.style.height = h + 'px';
-    editPanel.style.height = h - 4 + 'px';
+    editPanel.style.height = h + 'px';
     tocPanel.style.height = h + 'px';
-    textArea.style.height = editPanel.offsetHeight - tabHeader.offsetHeight - textAreaToolbar.offsetHeight + 'px';
+    textArea.style.height = editPanel.offsetHeight - tabHeader.offsetHeight - (textAreaToolbar.offsetHeight == 0 ? 29 : textAreaToolbar.offsetHeight) - 3 + 'px';
+    contentsWrapper.style.height = editPanel.offsetHeight - tabHeader.offsetHeight + 'px';
     //textArea.style.minHeight = editPanel.offsetHeight - tabHeader.offsetHeight + 'px';
     //textArea.style.maxHeight = editPanel.offsetHeight - tabHeader.offsetHeight + 'px';
     //textArea.style.width = editPanel.offsetWidth + 'px';
 }
+
 
 const icons = {
     branch: 'chevron-right', // 'folder',
@@ -80,18 +87,8 @@ function parseTreeData(sourceText) {
             return r;
 
         // r = { name: s };
-        let label = '';
-        let description = '';
-        let sep = '///';
-        let idx = s.indexOf(sep);
-        if (idx >= 0) {
-            label = s.substring(0, idx).trim();
-            description = s.substring(idx + sep.length).trim();
-        } else {
-            label = s;
-            description = ' ';
-        }
-        r = { icons, label: label, value: description};
+        let obj = getData(s);
+        r = { icons, label: obj.label, value: obj.description};
 
         let nextIndent = detectIndent(currentIndex + 1);
         if (nextIndent && nextIndent > currentIndent) {
@@ -125,6 +122,27 @@ function parseTreeData(sourceText) {
 
         return r;
     } 
+
+    function getData(str) {
+        let s = str.trim();
+        let label = '';
+        let description = ''; 
+        let sep = '///';
+        let idx = s.indexOf(sep);
+        if (idx >= 0) {
+            label = s.substring(0, idx).trim();
+            description = s.substring(idx + sep.length).trim();
+        } else {
+            label = s;
+            description = ' ';
+        }
+
+        if (label == '') label = ' ';
+        if (description == '') description = ' ';
+
+        return {label: label, description: description};
+    }
+
 
 }
 
@@ -200,4 +218,8 @@ function initializeTree() {
 function onNodeSelect(ev) {
     let node = ev.detail;
     contentsBox.innerHTML = node.value; 
+}
+
+function onTabSelect(ev) {
+    updateHeights();    
 }
