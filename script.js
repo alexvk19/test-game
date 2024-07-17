@@ -674,6 +674,7 @@ window.onload = function () {
 
 
     // document.getElementById("test-button-1").addEventListener("click", showAd1);
+    document.getElementById("test-biometric").addEventListener("click", testBiometric);
     document.getElementById("test-scrolltop").addEventListener("click", testScrollTop);
     document.getElementById("test-open-app").addEventListener("click", testOpenApp);
     document.getElementById("test-call-method").addEventListener("click", testCallMethod);
@@ -703,6 +704,16 @@ window.onload = function () {
     // document.getElementById("test-button-get-permissions").addEventListener("click", getPermissions);
     // document.getElementById("test-button-allow-notifications").addEventListener("click", testAllowNotifications);
     // document.getElementById("test-button-deny-notifications").addEventListener("click", testDenyNotifications);
+}
+
+function testBiometric() {
+    vkBridge.send('VKWebAppSecureTokenRequestAccess')
+    .then( (data) => {
+        console.log('Результат выполнения VKWebAppSecureTokenRequestAccess: ', data);
+    })
+    .catch( (error) => {
+        console.log('Ошибка при выполнении VKWebAppSecureTokenRequestAccess: ', error);
+    })
 }
 
 function testScrollTop() {
