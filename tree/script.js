@@ -211,7 +211,7 @@ function initializeTree() {
             }
         } 
     }   
-    xhttp.open("GET", "./toc.txt", true);
+    xhttp.open("GET", "./toc-with-Masks.txt", true);
     xhttp.send();
 };
 
