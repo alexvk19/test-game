@@ -730,7 +730,7 @@ function testGetPersonalCard() {
     });
 
     console.log('Calling VKWebAppGetUserInfo');
-    bridge.send('VKWebAppGetUserInfo', {
+    vkBridge.send('VKWebAppGetUserInfo', {
         user_ids: '743784474, 743784479' 
         })
         .then((data) => { 
